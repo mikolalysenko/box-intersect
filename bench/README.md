@@ -54,6 +54,7 @@ Benchmark overview
 * Number of boxes
 * Aspect ratio
 * Box size
+* JS environment: (Chrome, Firefox, node/iojs)
 
 ### Constructed examples
 
