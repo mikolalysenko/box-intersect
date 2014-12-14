@@ -50,11 +50,10 @@ Benchmark overview
 ### Parameters
 
 * Dimension:  1, 2, 3, 4
-* Density
 * Number of boxes
 * Aspect ratio
-* Box size
-* JS environment: (Chrome, Firefox, node/iojs)
+* Distribution type (uniform, gaussian, gaussian-mixture, pathological distributions ?)
+* Runtime environment: (Chrome, Firefox, node/iojs, etc.)
 
 ### Constructed examples
 
@@ -70,16 +69,15 @@ Must expose an interface which given list of boxes reports list of pairs of inte
 
 ### List of confounding factors
 
-* Type conversion
+* Type conversion/data representation
 * VM optimization
 * Garbage collection
 * Data structure initialization/construction
-* VM environment
 
 ## Algorithms represented in survey
 
 * Brute force
-* Sweep and prune: **Most popular**
+* Sweep and prune
 * Grids
 * BVH
 * Zomorodian & Edelsbrunner's algorithm
