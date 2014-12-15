@@ -1,0 +1,17 @@
+{
+  "name": "Uniform 3D",
+  "algorithms": [
+    "brute-force",
+    "oimo-brute-force"
+  ],
+  "distribution": {
+    "d": 3,
+    "type": "uniform",
+    "lo": [0.1,0.1,0.1],
+    "hi": [0.2,0.2,0.2]
+  },
+  "sweep": {
+    "n": [100]
+  },
+  "numIters": 1
+}

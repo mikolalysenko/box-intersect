@@ -3,7 +3,8 @@ var runBench = require('./bench')
 var makePlot = require('./plot')
 
 var cases = [
-  require('./cases/uniform2d.json')
+  //require('./cases/uniform2d.json')
+  require('./cases/uniform3d.json')
 ]
 
 if(process.argv[2]) {

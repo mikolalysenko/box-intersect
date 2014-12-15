@@ -4,7 +4,9 @@
     "brute-force",
     "rbush-incremental",
     "rbush-bulk",
-    "box2d"
+    "box2d",
+    "p2-grid",
+    "p2-sweep"
   ],
   "distribution": {
     "d": 2,

@@ -1,5 +1,3 @@
-//Currently broken
-
 var rbush = require('rbush')
 
 exports.name = 'rbush'

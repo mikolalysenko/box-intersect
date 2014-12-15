@@ -15,24 +15,29 @@ Benchmark overview
 
 * Algorithm: BVH
 * Try incremental insertion and bulk loading
+* Ease of use:  :smile:
 
 ### [box2d](http://box2d.org/)
 
 * Algorithm: BVH
 * https://code.google.com/p/jsbox2d/source/browse/trunk/src/js/Collision/b2BroadPhase.js
-* Note: Gold standard for 2D physics in C, multiple JS ports hard to pick best one...
+* Note: Gold standard for 2D physics in C, multiple JS ports
+* Using this version:  https://code.google.com/p/jsbox2d/
+* Ease of use: :neutral_face:
 
-### ~~~[PhysicsJS](https://github.com/wellcaffeinated/PhysicsJS)~~~
+### [~PhysicsJS~](https://github.com/wellcaffeinated/PhysicsJS)
 
 * Algorithm: Sweep and prune
 * https://github.com/wellcaffeinated/PhysicsJS/blob/master/src/behaviors/sweep-prune.js
-* Skipping this, collision detection code is too tightly coupled to rest of engine
+* Skipping this for now, collision detection code is too tightly coupled to rest of engine.  Too much work to use this thing
+* Ease of use: :scream: 
 
 ### [p2.js](https://github.com/schteppe/p2.js)
 
 * Algorithms: grids and sweep-and-prune
 * https://github.com/schteppe/p2.js/blob/master/src/collision/GridBroadphase.js
 * https://github.com/schteppe/p2.js/blob/master/src/collision/SAPBroadphase.js
+* Ease of use: :sob:
 
 ### [oimo.js](https://github.com/lo-th/Oimo.js/)
 
@@ -40,6 +45,7 @@ Benchmark overview
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/BruteForceBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/sap/SAPBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/dbvt/DBVTBroadPhase.js
+* Ease of use: :weary:
 
 ### [cannon.js](https://github.com/schteppe/cannon.js)
 
