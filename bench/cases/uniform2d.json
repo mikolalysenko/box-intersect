@@ -1,0 +1,15 @@
+{
+  "name": "Uniform 2D",
+  "algorithms": [
+    "brute-force"
+  ],
+  "distribution": {
+    "d": 2,
+    "type": "uniform",
+    "lo": [0.1,0.1],
+    "hi": [0.2,0.2]
+  },
+  "sweep": {
+    "n": [10, 100, 1000, 10000]
+  }
+}
