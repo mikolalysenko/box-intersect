@@ -22,10 +22,11 @@ Benchmark overview
 * https://code.google.com/p/jsbox2d/source/browse/trunk/src/js/Collision/b2BroadPhase.js
 * Note: Gold standard for 2D physics in C, multiple JS ports hard to pick best one...
 
-### [PhysicsJS](https://github.com/wellcaffeinated/PhysicsJS)
+### ~~~[PhysicsJS](https://github.com/wellcaffeinated/PhysicsJS)~~~
 
 * Algorithm: Sweep and prune
 * https://github.com/wellcaffeinated/PhysicsJS/blob/master/src/behaviors/sweep-prune.js
+* Skipping this, collision detection code is too tightly coupled to rest of engine
 
 ### [p2.js](https://github.com/schteppe/p2.js)
 
