@@ -23,7 +23,7 @@ Benchmark overview
 * https://code.google.com/p/jsbox2d/source/browse/trunk/src/js/Collision/b2BroadPhase.js
 * Note: Gold standard for 2D physics in C, multiple JS ports
 * Using this version:  https://code.google.com/p/jsbox2d/
-* Ease of use: :neutral_face: Collision detection buried in huge API.  Not modular, well organized.  Was not too much work to dig out relevant bits.
+* Ease of use: :neutral_face: Collision detection buried in huge API.  Not modular, but still well organized.  Was not too much work to dig out relevant bits.
 
 ### [~~PhysicsJS~~](https://github.com/wellcaffeinated/PhysicsJS)
 
@@ -41,11 +41,11 @@ Benchmark overview
 
 ### [oimo.js](https://github.com/lo-th/Oimo.js/)
 
-* Algorithms: brute force, sweep and prune, BVH
+* Algorithms: brute force, BVH, ~~sweep and prune~~
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/BruteForceBroadPhase.js
-* https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/sap/SAPBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/dbvt/DBVTBroadPhase.js
-* Ease of use: :persevere:  Collision detection buried in a bunch of object oriented/inheritance hierarchies.  Required some manual modification to get it to work, but still easier than PhysicsJS.  Has a bunch of different features though...
+* ~~https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/sap/SAPBroadPhase.js~~
+* Ease of use: :persevere:  Collision detection buried in a bunch of object oriented/inheritance hierarchies.  Required some manual modification to get it to work and still didn't manage to get the sweep and prune pass working! At least it isn't as much of a mess as physicsjs
 
 ### [cannon.js](https://github.com/schteppe/cannon.js)
 

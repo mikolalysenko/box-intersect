@@ -1,8 +1,7 @@
 {
   "name": "Uniform 3D",
   "algorithms": [
-    "brute-force",
-    "oimo-brute-force"
+    "oimo-sweep"
   ],
   "distribution": {
     "d": 3,

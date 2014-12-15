@@ -13,7 +13,9 @@ var codes = {
   'box2d': require('./algorithms/box2d/broadphase'),
   'p2-grid': require('./algorithms/p2/grid'),
   'p2-sweep': require('./algorithms/p2/sweep'),
-  'oimo-brute-force': require('./algorithms/oimo/brute-force')
+  'oimo-brute-force': require('./algorithms/oimo/brute-force'),
+  'oimo-bvh': require('./algorithms/oimo/bvh'),
+  'oimo-sweep': require('./algorithms/oimo/sweep'),
 }
 
 function generateBoxes(options) {

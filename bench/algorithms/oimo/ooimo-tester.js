@@ -8,6 +8,7 @@ exports.prepare = function(boxes) {
       belongsTo: 1,
       collidesWith: 1,
       parent: {
+        sleeping: false,
         isDynamic: true,
         numJoints: 0,
         jointLink: null
@@ -22,5 +23,5 @@ exports.run = function(BroadPhase, boxes) {
     bp.addProxy(bp.createProxy(boxes[i]))
   }
   bp.detectPairs()
-  return bp.numPairs>>>1
+  return bp.numPairs
 }
