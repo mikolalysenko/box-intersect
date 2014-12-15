@@ -15,7 +15,7 @@ Benchmark overview
 
 * Algorithm: BVH
 * Try incremental insertion and bulk loading
-* Ease of use:  :smile:
+* Ease of use:  :smile: Super simple interface, clear no frills documentation.  ALSO VERY FAST
 
 ### [box2d](http://box2d.org/)
 
@@ -23,21 +23,21 @@ Benchmark overview
 * https://code.google.com/p/jsbox2d/source/browse/trunk/src/js/Collision/b2BroadPhase.js
 * Note: Gold standard for 2D physics in C, multiple JS ports
 * Using this version:  https://code.google.com/p/jsbox2d/
-* Ease of use: :weary_face:
+* Ease of use: :neutral-face: Collision detection buried in huge API.  Not very modular, but code relatively well organized.  Easy to dig out the relevant bits and package them up.
 
 ### [~~PhysicsJS~~](https://github.com/wellcaffeinated/PhysicsJS)
 
 * Algorithm: Sweep and prune
 * https://github.com/wellcaffeinated/PhysicsJS/blob/master/src/behaviors/sweep-prune.js
 * Skipping this for now, collision detection code is too tightly coupled to rest of engine.  Too much work to use this thing
-* Ease of use: :scream: 
+* Ease of use: :scream: Total nightmare dealing with this thing.  Would not recommend.
 
 ### [p2.js](https://github.com/schteppe/p2.js)
 
 * Algorithms: grids and sweep-and-prune
 * https://github.com/schteppe/p2.js/blob/master/src/collision/GridBroadphase.js
 * https://github.com/schteppe/p2.js/blob/master/src/collision/SAPBroadphase.js
-* Ease of use: :neutral-face:
+* Ease of use: :neutral-face: Code was clean, easy to grab the relevant modules though a require.  Collision detection routines are not publically documented though...
 
 ### [oimo.js](https://github.com/lo-th/Oimo.js/)
 
@@ -45,7 +45,7 @@ Benchmark overview
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/BruteForceBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/sap/SAPBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/dbvt/DBVTBroadPhase.js
-* Ease of use: :sob:
+* Ease of use: :sob:  Collision detection buried in a bunch of object oriented/inheritance hierarchies.  Required some manual modification to get it to work, but still easier than PhysicsJS.  Has a bunch of different features though...
 
 ### [cannon.js](https://github.com/schteppe/cannon.js)
 
