@@ -23,7 +23,7 @@ Benchmark overview
 * https://code.google.com/p/jsbox2d/source/browse/trunk/src/js/Collision/b2BroadPhase.js
 * Note: Gold standard for 2D physics in C, multiple JS ports
 * Using this version:  https://code.google.com/p/jsbox2d/
-* Ease of use: :neutral_face:
+* Ease of use: :weary_face:
 
 ### [~~PhysicsJS~~](https://github.com/wellcaffeinated/PhysicsJS)
 
@@ -37,7 +37,7 @@ Benchmark overview
 * Algorithms: grids and sweep-and-prune
 * https://github.com/schteppe/p2.js/blob/master/src/collision/GridBroadphase.js
 * https://github.com/schteppe/p2.js/blob/master/src/collision/SAPBroadphase.js
-* Ease of use: :sob:
+* Ease of use: :neutral-face:
 
 ### [oimo.js](https://github.com/lo-th/Oimo.js/)
 
@@ -45,7 +45,7 @@ Benchmark overview
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/BruteForceBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/sap/SAPBroadPhase.js
 * https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/dbvt/DBVTBroadPhase.js
-* Ease of use: :weary:
+* Ease of use: :sob:
 
 ### [cannon.js](https://github.com/schteppe/cannon.js)
 
