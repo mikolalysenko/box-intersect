@@ -25,7 +25,7 @@ Benchmark overview
 * Using this version:  https://code.google.com/p/jsbox2d/
 * Ease of use: :neutral_face:
 
-### [~PhysicsJS~](https://github.com/wellcaffeinated/PhysicsJS)
+### [~~PhysicsJS~~](https://github.com/wellcaffeinated/PhysicsJS)
 
 * Algorithm: Sweep and prune
 * https://github.com/wellcaffeinated/PhysicsJS/blob/master/src/behaviors/sweep-prune.js
