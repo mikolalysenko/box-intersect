@@ -1,11 +1,16 @@
 Benchmark overview
 ==================
 
+**WORK IN PROGRESS**
+
+The goal of this benchmark is to compare different solutions for finding all intersections amongst a set of boxes (which is pretty much what box-intersect does).  As this problem is common in rigid body dynamics simulations, many of these codes are implemented within physics simulators.  An effort has been made in each case to connect each of them to this code.
+
 ## Libraries/algorithms
 
 ### Brute force
 
 * Algorithm: Brute force
+* From scratch implementation of brute force collision test
 
 ### box-intersect
 
@@ -27,14 +32,14 @@ Benchmark overview
 
 ### [~~PhysicsJS~~](https://github.com/wellcaffeinated/PhysicsJS)
 
-* Algorithm: Sweep and prune
-* https://github.com/wellcaffeinated/PhysicsJS/blob/master/src/behaviors/sweep-prune.js
+* ~~Algorithm: Sweep and prune~~
+* ~~https://github.com/wellcaffeinated/PhysicsJS/blob/master/src/behaviors/sweep-prune.js~~
 * Skipping this for now, collision detection code is too tightly coupled to rest of engine.  Too much work to use this thing
 * Ease of use: :dizzy_face: Total nightmare dealing with this thing.  Would not recommend.
 
 ### [p2.js](https://github.com/schteppe/p2.js)
 
-* Algorithms: grids and sweep-and-prune
+* Algorithms: grid and sweep-and-prune
 * https://github.com/schteppe/p2.js/blob/master/src/collision/GridBroadphase.js
 * https://github.com/schteppe/p2.js/blob/master/src/collision/SAPBroadphase.js
 * Ease of use: :neutral_face: Code was clean, easy to grab the relevant modules though a require.  Collision detection routines are not publically documented though...
@@ -47,12 +52,15 @@ Benchmark overview
 * ~~https://github.com/lo-th/Oimo.js/blob/gh-pages/src/dev/collision/broadphase/sap/SAPBroadPhase.js~~
 * Ease of use: :persevere:  Collision detection buried in a bunch of object oriented/inheritance hierarchies.  Required some manual modification to get it to work and still didn't manage to get the sweep and prune pass working! At least it isn't as much of a mess as physicsjs
 
-### [cannon.js](https://github.com/schteppe/cannon.js)
+### [~~cannon.js~~](https://github.com/schteppe/cannon.js)
 
-* Algorithm: Sweep and prune
+* Algorithm: brute force, grid, sweep and prune
 * https://github.com/schteppe/cannon.js/blob/master/src/collision/SAPBroadphase.js
+* Only supports sphere geometries, not boxes
 
 ## Data sets
+
+Want to test on two different types of data.  Generated, parameterized distributions and some realistic data taken from various samples
 
 ### Parameters
 
@@ -76,10 +84,10 @@ Must expose an interface which given list of boxes reports list of pairs of inte
 
 ### List of confounding factors
 
-* Type conversion/data representation
-* VM optimization
-* Garbage collection
-* Data structure initialization/construction
+* Type conversion/data representation - Should libraries be penalized for using complicated data types?
+* VM optimizations - Sometimes optimizations are non-deterministic (for example in v8), order of execution and other factors can possibly modify performance
+* Garbage collection - If too much garbage left from previous algorithm, this could slow down subsequent code execution.
+* Data structure initialization/construction - Especially for physics engines, many collision libraries are designed for incremental updates.  May be slower starting from scratch, which is penalized by this benchmark.
 
 ## Algorithms represented in survey
 
@@ -88,3 +96,29 @@ Must expose an interface which given list of boxes reports list of pairs of inte
 * Grids
 * BVH
 * Zomorodian & Edelsbrunner's algorithm
+
+## Analysis
+
+### Brute force
+
+Trivial analysis
+
+### Grid
+
+1D case:  Consider size of interval distribution, packing argument
+
+2D case: Extend 1D case to consider aspect ratio
+
+### BVH
+
+Performance here is more mysterious, lots of diverse ways to create these gadgets.
+
+BVH data structres are all O(n) size, so maybe can apply Matousek/Chazelle type argument on range searching lower bounds.  If true, then should take about O(n^(1-1/d))
+
+### Sweep and prune
+
+Worst case O(n^2), best case O(n log(n)).  More likely case is O(n^(1-1/d)).  Need to think about this more.
+
+### Z&E
+
+Worst case O(n log(n)), can be proven
