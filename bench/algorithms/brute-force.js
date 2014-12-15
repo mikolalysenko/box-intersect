@@ -18,8 +18,7 @@ j_loop:
         var a1 = a[i+d]
         var b0 = b[i]
         var b1 = b[i+d]
-
-        if(a[0] <= b[1] && b[0] <= a[1]) {
+        if(!(a0 <= b1 && b0 <= a1)) {
           continue j_loop
         }
       }

@@ -7,7 +7,10 @@ var distributions = {
 }
 
 var codes = {
-  'brute-force': require('./algorithms/brute-force')
+  'brute-force': require('./algorithms/brute-force'),
+  'rbush-incremental': require('./algorithms/rbush/incremental'),
+  'rbush-bulk': require('./algorithms/rbush/bulk'),
+  'box2d': require('./algorithms/box2d/broadphase')
 }
 
 function generateBoxes(options) {

@@ -1,7 +1,10 @@
 {
   "name": "Uniform 2D",
   "algorithms": [
-    "brute-force"
+    "brute-force",
+    "rbush-incremental",
+    "rbush-bulk",
+    "box2d"
   ],
   "distribution": {
     "d": 2,
@@ -10,6 +13,7 @@
     "hi": [0.2,0.2]
   },
   "sweep": {
-    "n": [10, 100, 1000, 10000]
-  }
+    "n": [10, 10000]
+  },
+  "numIters": 5
 }
