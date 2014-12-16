@@ -56,7 +56,7 @@ The goal of this benchmark is to compare different solutions for finding all int
 
 * ~~Algorithm: brute force, grid, sweep and prune~~
 * ~~https://github.com/schteppe/cannon.js/blob/master/src/collision/SAPBroadphase.js~~
-* Only supports sphere geometries, not boxes :sad_face:
+* Only supports sphere geometries for broadphase, too much work to test.
 
 ## Data sets
 
