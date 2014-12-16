@@ -1,8 +1,7 @@
 'use strict'
 
 module.exports           = wrapper
-module.exports.full      = fullIntersect
-module.exports.bipartite = redBlueIntersect
+module.exports.direct    = redBlueIntersect
 
 var box1d = require('box-intersect-1d')
 var pool  = require('typedarray-pool')
@@ -28,30 +27,6 @@ function iotaArray(n) {
   return result
 }
 
-function fullIntersect(boxes, visit) {
-  var n = boxes.length
-  if(n <= 0) {
-    return
-  }
-  var d = (boxes[0].length)>>>1
-  if(d <= 0) {
-    return
-  }
-  switch(d) {
-    case 1:
-      return box1d.full(boxes, visit)
-
-    default:
-      var boxList = convertBoxes(boxes, n, d)
-      var boxIds  = iotaArray(n)
-
-      //TODO: run algorithm
-
-      pool.free(boxList)
-      pool.free(boxIds)
-  } 
-}
-
 function redBlueIntersect(red, blue, visit) {
   var n = red.length
   var m = blue.length
@@ -72,30 +47,40 @@ function redBlueIntersect(red, blue, visit) {
       var blueList = convertBoxes(blue, m, d)
       var blueIds  = iotaArray(m)
 
-      //TODO
+      var retval = boxnd(d, d-1, visit,
+        0, n, redList, redIds,
+        0, m, blueList, blueIds)
 
       pool.free(redList)
       pool.free(redIds)
       pool.free(blueList)
       pool.free(blueIds)
+
+      return retval
   }
 }
 
 //User-friendly wrapper layer
 function wrapper() {
-  var result
   switch(arguments.length) {
     case 1:
-      result = []
-      fullIntersect(arguments[0], function(i,j) {
-        result.push([i,j])
+      var result = []
+      fullIntersect(arguments[0], arguments[0], function(i,j) {
+        if(i !== j) {
+          result.push([i,j])
+        }
       })
       return result
     case 2:
       if(typeof arguments[1] === 'function') {
-        return fullIntersect(arguments[0], arguments[1])
+        var visit = arguments[1]
+        return redBlueIntersect(arguments[0], arguments[0], function(i,j) {
+          if(i !== j) {
+            return visit(i, j)
+          }
+        })
       } else {
-        result = []
+        var result = []
         redBlueIntersect(arguments[0], arguments[1], function(i,j) {
           result.push([i,j])
         })
