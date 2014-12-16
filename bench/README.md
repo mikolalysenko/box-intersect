@@ -99,13 +99,22 @@ Must expose an interface which given list of boxes reports list of pairs of inte
 
 ## Analysis
 
+
 ### Brute force
 
-Trivial analysis
+Trivial analysis, O(n^2) in number of boxes
 
 ### Grid
 
-1D case:  Consider size of interval distribution, packing argument
+Three modes of performance:
+
+* Quadratic (grid too small)
+* Exponential (grid too fine)
+* Linear (grid just right)
+
+How to tell:
+
+1D case: Consider size of interval distribution, packing argument
 
 2D case: Extend 1D case to consider aspect ratio
 
@@ -121,4 +130,4 @@ Worst case O(n^2), best case O(n log(n)).  More likely case is O(n^(1-1/d)).  Ne
 
 ### Z&E
 
-Worst case O(n log(n)), can be proven
+O(n log(n)), no matter what
