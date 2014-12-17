@@ -15,8 +15,8 @@ A detailed experimental analysis of the performance of this module can be found 
 Some possible applications of this library include:
 
 * Collision detection
-* Curve intersection
-* Batched GIS queries
+* Polygon clipping
+* Batched box stabbing queries
 * Mesh boolean operations (CSG)
 
 # Example
@@ -70,10 +70,17 @@ You can also detect all intersections between two different sets of boxes:
 ```javascript
 var boxIntersect = require('box-intersect')
 
+//Again, boxes are given as flattened lists of coordinates
 var red = [
+  [0, 0, 0, 8, 1, 1],  //Format: [minX, minY, minZ, maxX, maxY, maxZ]
+  [0, 0, 0, 1, 8, 1],
+  [0, 0, 0, 1, 1, 8]
 ]
 
 var blue = [
+  [5, 0, 0, 6, 10, 10],
+  [0, 5, 0, 10, 6, 10],
+  [0, 0, 5, 10, 10, 10]
 ]
 
 //Report all crossings
@@ -88,6 +95,10 @@ boxIntersect.direct(red, blue, function(r, b) {
 #### Output
 
 ```
+crossings= [ [ 0, 0 ], [ 1, 1 ], [ 2, 2 ] ]
+overlap: [ 0, 0, 0, 8, 1, 1 ] [ 5, 0, 0, 6, 10, 10 ]
+overlap: [ 0, 0, 0, 1, 8, 1 ] [ 0, 5, 0, 10, 6, 10 ]
+overlap: [ 0, 0, 0, 1, 1, 8 ] [ 0, 0, 5, 10, 10, 10 ]
 ```
 
 # Install
@@ -117,7 +128,7 @@ The parameters to the function are as follows:
 * `otherBoxes` is an optional list of boxes which `boxes` is tested against.  If not specified, then the algorithm will report self intersections in `boxes`
 * `visit(i,j)` is a callback which is called once for each overlapping pair of boxes.  If `visit` returns any value not equal to `undefined`, then the search is terminated immediately and this value is returned.  If `visit` is not specified, then a list of intersecting pairs is returned.
 
-**Returns** `visit` specified, then the last returned value of `visit`.  Otherwise an array of pairs of intersecting boxes.
+**Returns** If `visit` was specified, then the last returned value of `visit`.  Otherwise an array of pairs of intersecting boxes.
 
 **Note** The boxes are treated as closed intervals.  That is, the boxes `[1,1,2,2]` and `[0,0,1,1]` intersect according to this algorithm.
 
