@@ -124,7 +124,7 @@ Finds all pairs intersections in a set of boxes.  There are two basic modes of o
 
 The parameters to the function are as follows:
 
-* `boxes` is a list of boxes
+* `boxes` is a list of boxes.  Boxes are represented as length 2*d arrays where the first d-components are the lower bound of the box and then the next d components are the upper bound.
 * `otherBoxes` is an optional list of boxes which `boxes` is tested against.  If not specified, then the algorithm will report self intersections in `boxes`
 * `visit(i,j)` is a callback which is called once for each overlapping pair of boxes.  If `visit` returns any value not equal to `undefined`, then the search is terminated immediately and this value is returned.  If `visit` is not specified, then a list of intersecting pairs is returned.
 

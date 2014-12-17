@@ -1,7 +1,7 @@
 'use strict'
 
 var tape = require('tape')
-var harness = require('./harness')
+var harness = require('./util/harness')
 
 tape('box-intersect', function(t) {
 
