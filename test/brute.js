@@ -58,11 +58,6 @@ tape('bruteForcePartial', function(t) {
       bruteForcePartial(d, axis, visit, flip,
         redStart, redEnd, red, redIds,
         blueStart, blueEnd, blue, blueIds)
-
-      list.forEach(function(pair) {
-        t.ok(redStart <= pair[0] && pair[0] < redEnd, 'red bounds: ['+pair+']')
-        t.ok(blueStart <= pair[1] && pair[1] < blueEnd, 'blue bounds: ['+pair+']')
-      })
       
       var elist = []
       for(var i=redStart; i<redEnd; ++i) {
