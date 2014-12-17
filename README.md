@@ -2,7 +2,15 @@
 
 box-intersect
 =============
-Report all intersections in a set of n-dimensional boxes.
+This modules finds all intersection in a set of n boxes in d-dimensions, or between a pair of sets with n and m boxes respectively.  The time taken is O((n+m) log^d(n+m)) and the algorithm uses a temporary scratch memory of size O(n+m).  This memory is pooled so that after the first execution no additional memory is allocated.
+
+The algorithm in this package is based on the one described in the following paper:
+
+* [A. Zomorodian, H. Edelsbrunner. (2000) "Software for fast box intersections" In proceedings of SoCG](http://pub.ist.ac.at/~edels/Papers/2002-J-01-FastBoxIntersection.pdf)
+
+A detailed experimental analysis of the performance of this module can be found in the `bench/README.md` file within this repository:
+
+* [Benchmark and performance comparisons](https://github.com/mikolalysenko/box-intersect/blob/master/bench/README.md#benchmark-overview)
 
 # Example
 
