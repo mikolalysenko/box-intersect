@@ -59,13 +59,11 @@ tape('bruteForcePartial', function(t) {
         redStart, redEnd, red, redIds,
         blueStart, blueEnd, blue, blueIds)
 
-      /*
       list.forEach(function(pair) {
         t.ok(redStart <= pair[0] && pair[0] < redEnd, 'red bounds: ['+pair+']')
         t.ok(blueStart <= pair[1] && pair[1] < blueEnd, 'blue bounds: ['+pair+']')
       })
-*/
-
+      
       var elist = []
       for(var i=redStart; i<redEnd; ++i) {
         for(var j=blueStart; j<blueEnd; ++j) {
@@ -130,6 +128,8 @@ tape('bruteForcePartial', function(t) {
 
   verify(2, 0, true, genBoxes.degenerate(2), genBoxes.degenerate(2))
   verify(2, 0, false, genBoxes.degenerate(2), genBoxes.degenerate(2))
+
+  //TODO: test early out
 
   t.end()
 })

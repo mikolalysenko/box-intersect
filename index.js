@@ -5,11 +5,10 @@ module.exports.direct    = redBlueIntersect
 
 var BRUTE_FORCE_CUTOFF   = 32
 
-var box1d = require('box-intersect-1d')
 var pool  = require('typedarray-pool')
 var boxnd = require('./lib/boxnd')
 
-//Use brute force for small problems
+//Use brute force test for bipartite case
 function bruteForce(d, red, blue, visit, flip) {
   var n = red.length
   var m = blue.length
@@ -40,6 +39,36 @@ blue_loop:
       } else {
         retval = visit(i, j)
       }
+      if(retval !== void 0) {
+        return retval
+      }
+    }
+  }
+}
+
+//Brute force full test
+function bruteForceFull(d, boxes, visit) {
+  var n = boxes.length
+  for(var i=0; i<n; ++i) {
+    var a = boxes[i]
+    for(var k=0; k<d; ++k) {
+      if(a[k+d] < a[k]) {
+        continue
+      }
+    }
+box_loop:
+    for(var j=0; j<i; ++j) {
+      var b = boxes[j]
+      for(var k=0; k<d; ++k) {
+        var a0 = a[k]
+        var a1 = a[k+d]
+        var b0 = b[k]
+        var b1 = b[k+d]
+        if(b1 < b0 || b1 < a0 || a1 < b0) {
+          continue box_loop
+        }
+      }
+      var retval = visit(i, j)
       if(retval !== void 0) {
         return retval
       }
@@ -84,19 +113,28 @@ function redBlueIntersect(red, blue, visit) {
     return
   }
 
+  //Test for bipartite or full intersection
+  var full = (red === blue)
+
   //If either n or m is small, then use brute force
   if(n < BRUTE_FORCE_CUTOFF || 
      m < BRUTE_FORCE_CUTOFF) {
-    if(m < n) {
+
+    if(full) {
+      return bruteForceFull(d, red, visit, false)
+    } else if(m < n) {
       return bruteForce(d, red, blue, visit, false)
     } else {
       return bruteForce(d, blue, red, visit, true)
     }
   }
 
-  //If d === 1, then use 1D algorithm
-  if(d === 1) {
-    return box1d.bipartite(red, blue, visit)
+  //Initialize sweep queue
+  boxnd.sweepInit(Math.max(n, m))
+
+  //Special case:  1D full intersection, use a different algorithm
+  if(d === 1 && full) {
+    return boxnd.sweepFull(visit, n, red)
   }
 
   //Otherwise, we use the general purpose algorithm
@@ -108,10 +146,28 @@ function redBlueIntersect(red, blue, visit) {
   var blueIds  = pool.mallocInt32(m)
   m = convertBoxes(blue, m, d, blueList, blueIds)
 
-  var retval = boxnd(d, visit,
-    n, redList,  redIds,
-    m, blueList, blueIds)
-  
+  var retval
+  if(d === 1) {
+    //Special case:  1D bipartite intersection
+    retval = boxnd.sweep(
+      d, visit, 
+      0, n, red,  redIndex,
+      0, m, blue, blueIndex)
+  } else {
+    retval = boxnd.intersect(
+      d, 0, visit, false,
+      0, n, red,  redIndex,
+      0, m, blue, blueIndex,
+      -Infinity, Infinity)
+    if((retval === void 0) && !full) {
+      retval = boxnd.intersect(
+        d, 0, visit, true,
+        0, m, blue, blueIndex,
+        0, n, red,  redIndex,
+        -Infinity, Infinity)
+    }
+  }
+
   pool.free(redList)
   pool.free(redIds)
   pool.free(blueList)
@@ -121,33 +177,27 @@ function redBlueIntersect(red, blue, visit) {
 }
 
 //User-friendly wrapper, handle full input and no-visitor cases
-function wrapper() {
+function wrapper(arg0, arg1, arg2) {
+  var result
   switch(arguments.length) {
     case 1:
-      var result = []
-      redBlueIntersect(arguments[0], arguments[0], function(i,j) {
-        if(i < j) {
-          result.push([i, j])
-        }
+      result = []
+      redBlueIntersect(arg0, arg0, function(i,j) {
+        result.push([i, j])
       })
       return result
     case 2:
-      if(typeof arguments[1] === 'function') {
-        var visit = arguments[1]
-        return redBlueIntersect(arguments[0], arguments[0], function(i,j) {
-          if(i < j) {
-            return visit(i, j)
-          }
-        })
+      if(typeof arg1 === 'function') {
+        return redBlueIntersect(arg0, arg0, arg1)
       } else {
-        var result = []
-        redBlueIntersect(arguments[0], arguments[1], function(i,j) {
+        result = []
+        redBlueIntersect(arg0, arg1, function(i,j) {
           result.push([i, j])
         })
         return result
       }
     case 3:
-      return redBlueIntersect(arguments[0], arguments[1], arguments[2])
+      return redBlueIntersect(arg0, arg1, arg2)
     default:
       throw new Error('box-intersect: Invalid arguments')
   }

@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "bit-twiddle": "^1.0.2",
-    "box-intersect-1d": "^1.0.1",
     "ndarray": "^1.0.16",
     "ndarray-sort": "^1.0.0",
     "typedarray-pool": "^1.1.0"
