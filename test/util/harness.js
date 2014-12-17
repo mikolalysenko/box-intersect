@@ -1,5 +1,5 @@
-exports.full = verifyFull
-exports.bipartite = verifyBipartite
+exports.verifyFull = verifyFull
+exports.verifyBipartite = verifyBipartite
 
 var boxIntersect = require('../index')
 
