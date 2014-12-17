@@ -106,6 +106,17 @@ tape('bruteForcePartial', function(t) {
   verify(2, 0, false, [[0, 0, 1, 1]], [[0,0,1,1]])
   verify(2, 0, true, [[0, 0, 1, 1]], [[0,0,1,1]])
 
+  genBoxes.hard.forEach(function(c) {
+    var red = c.red
+    var blue = c.blue
+    var d = c.d
+    for(var axis=0; axis<d-1; ++axis) {
+      for(var _flip=0; _flip<2; ++_flip) {
+        verify(d, axis, !_flip, red, blue)
+      }
+    }
+  })
+
 
   for(var d=2; d<=4; ++d) {
     for(var axis=0; axis<d-1; ++axis) {

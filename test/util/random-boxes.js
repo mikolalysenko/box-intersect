@@ -54,3 +54,14 @@ function degenerateBox(d) {
   }
   return result
 }
+
+var HARD_CASES = [
+  {
+    d: 2,
+    red: [[0,0,0,0]],
+    blue: [[0,0,0,0]]
+  }
+
+]
+
+exports.hard = HARD_CASES
