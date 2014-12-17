@@ -47,8 +47,7 @@ var blue = [
 //Report all crossings
 console.log('crossings=', boxIntersect(red, blue))
 
-
-//Can also call directly
+//Again can use a visitor.  Also possible to use lower overhead direct wrapper.
 boxIntersect.direct(red, blue, function(r, b) {
   console.log('overlap:', red[r], blue[b])
 })
@@ -58,7 +57,6 @@ boxIntersect.direct(red, blue, function(r, b) {
 
 ```
 ```
-
 
 # Install
 
