@@ -127,7 +127,7 @@ function wrapper() {
       var result = []
       redBlueIntersect(arguments[0], arguments[0], function(i,j) {
         if(i < j) {
-          result.push([i,j])
+          result.push([i, j])
         }
       })
       return result
@@ -142,7 +142,7 @@ function wrapper() {
       } else {
         var result = []
         redBlueIntersect(arguments[0], arguments[1], function(i,j) {
-          result.push([i,j])
+          result.push([i, j])
         })
         return result
       }

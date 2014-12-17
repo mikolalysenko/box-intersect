@@ -9,10 +9,10 @@ function boxOverlap(d, a, b) {
     var a1 = a[i+d]
     var b0 = b[i]
     var b1 = b[i+d]
-    if(a0 > a1 || b0 > b1) {
-      return false
-    }
-    if(!(a[0] <= b[1] && b[0] <= a[1])) {
+    if(a0 > a1 || 
+       b0 > b1 ||
+       a1 < b0 ||
+       b1 < a0) {
       return false
     }
   }
@@ -28,7 +28,7 @@ function compareResult(a, b) {
 }
 
 function bruteForceFullOverlap(boxes) {
-  var d = boxes[0].length
+  var d = (boxes[0].length)>>>1
   var result = []
   for(var i=0; i<boxes.length; ++i) {
     for(var j=0; j<i; ++j) {
@@ -37,6 +37,7 @@ function bruteForceFullOverlap(boxes) {
       }
     }
   }
+  result.sort(compareResult)
   return result
 }
 
@@ -57,20 +58,21 @@ function verifyFull(tape, boxes, str) {
 
 
 function bruteForceBipartiteOverlap(boxes, otherBoxes) {
-  var d = boxes[0].length
+  var d = (boxes[0].length)>>>1
   var result = []
   for(var i=0; i<boxes.length; ++i) {
     for(var j=0; j<otherBoxes.length; ++j) {
-      if(boxOverlap(boxes[i], otherBoxes[j])) {
+      if(boxOverlap(d, boxes[i], otherBoxes[j])) {
         result.push([i,j])
       }
     }
   }
+  result.sort(compareResult)
   return result
 }
 
 function algorithmPartialOverlap(boxes, otherBoxes) {
-  var result = boxIntersect(boes, otherBoxes)
+  var result = boxIntersect(boxes, otherBoxes)
   result.sort(compareResult)
   return result
 }
