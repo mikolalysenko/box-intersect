@@ -12,6 +12,13 @@ A detailed experimental analysis of the performance of this module can be found 
 
 * [Benchmark and performance comparisons](https://github.com/mikolalysenko/box-intersect/blob/master/bench/README.md#benchmark-overview)
 
+Some possible applications of this library include:
+
+* Collision detection
+* Curve intersection
+* Batched GIS queries
+* Mesh boolean operations (CSG)
+
 # Example
 
 ### Detecting overlaps in a set of boxes
@@ -23,20 +30,37 @@ var boxIntersect = require('box-intersect')
 
 //Boxes are listed as flattened 2*d length arrays
 var boxes = [
+  [1, 1, 2, 2],   //Interpretation: [minX, minY, maxX, maxY]
+  [0, -1, 3, 2],
+  [2, 1, 4, 5],
+  [0.5, 3, 1, 10]
 ]
 
 //Default behavior reports list of intersections
 console.log('overlaps:', boxIntersect(boxes))
 
+//Note:  Boxes are closed
+
 //Can also use a visitor to report all crossings
-boxIntersect(boxes, function(i,j) {
+var result = boxIntersect(boxes, function(i,j) {
   console.log('overlap:', boxes[i], boxes[j])
+
+  //Can early out by returning any value
+  if(i === 2 || j === 2) {
+    return 2
+  }
 })
+
+console.log('early out result:', result)
 ```
 
 #### Output
 
 ```
+overlaps: [ [ 0, 1 ], [ 0, 2 ], [ 1, 2 ] ]
+overlap: [ 1, 1, 2, 2 ] [ 0, -1, 3, 2 ]
+overlap: [ 1, 1, 2, 2 ] [ 2, 1, 4, 5 ]
+early out result: 2
 ```
 
 ### Bipartite intersection
@@ -82,7 +106,12 @@ var boxIntersect = require('box-intersect')
 
 ### `boxIntersect(boxes[, otherBoxes, visit])`
 
-Finds all box intersections in a set of boxes.  There are two basic modes for this function:
+Finds all pairs intersections in a set of boxes.  There are two basic modes of operation for this function:
+
+* `full` which detects all pairs of intersections within a single set of boxes
+* `bipartite` which detects pairs of intersections between two different sets of boxes
+
+The parameters to the function are as follows:
 
 * `boxes` is a list of boxes
 * `otherBoxes` is an optional list of boxes which `boxes` is tested against.  If not specified, then the algorithm will report self intersections in `boxes`
@@ -90,9 +119,11 @@ Finds all box intersections in a set of boxes.  There are two basic modes for th
 
 **Returns** `visit` specified, then the last returned value of `visit`.  Otherwise an array of pairs of intersecting boxes.
 
+**Note** The boxes are treated as closed intervals.  That is, the boxes `[1,1,2,2]` and `[0,0,1,1]` intersect according to this algorithm.
+
 ### `boxIntersect.direct(boxes, otherBoxes, visit)`
 
-To skip the overhead of calling the wrapper, you can also call the underlying bipartite intersection algorithm directly.  This requires that you pass in `boxes`, `otherBoxes` and `visit` as in the above case.  Under the hood, all intersection checks are implemented using this method.
+Internally both of the above modes are implemented in terms of bipartite intersection detection.  To skip the overhead of calling the wrapper, you can also call the underlying bipartite intersection algorithm directly.  This requires that you pass in `boxes`, `otherBoxes` and `visit` as in the above case.  Under the hood, all intersection checks are implemented using this method.
 
 # License
 
