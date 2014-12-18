@@ -4,12 +4,15 @@
 
 var tape = require('tape')
 var iota = require('iota-array')
+var guard = require('guarded-array')
 var genBoxes = require('./util/random-boxes')
 var boxnd = require('../lib/boxnd')
 
-
 function intervalOverlap(a, b) {
-  return (a[0] <= b[1] && b[0] <= a[1]) && (a[0] <= a[1]) && (b[0] <= b[1])
+  return (a[0] <= a[1]) && 
+         (b[0] <= b[1]) && 
+         (a[0] <= b[1]) && 
+         (b[0] <= a[1])
 }
 function compareIntervals(a,b){
   var d = a[0]-b[0]
@@ -39,7 +42,7 @@ function bruteForceIntersect(boxes) {
 function algorithmicIntersect(boxes) {
   boxnd.sweepInit(boxes.length)
   var result = []
-  boxnd.sweepFull(boxes, function(i,j) {
+  boxnd.sweepFull(guard(boxes), function(i,j) {
     result.push([i,j])
   })
   return canonicalizeIntervals(result)
@@ -58,6 +61,7 @@ function bruteForceRBIntersect(
       }
     }
   }
+
   result.sort(compareIntervals)
   return result
 }
@@ -72,14 +76,22 @@ function algorithmicRBIntersect(
 
   boxnd.sweepInit(Math.max(red.length, blue.length))
 
+  var d = (red[0].length>>>1)
+
   var redFlat = genBoxes.flatten(red)
   var redIds = iota(red.length)
   var blueFlat = genBoxes.flatten(blue)
   var blueIds = iota(blue.length)
 
   boxnd.sweep(1, visit,
-    redStart, redEnd, redFlat, redIds,
-    blueStart, blueFlat, blueIds)
+    redStart, 
+    redEnd, 
+    guard(redFlat, 2*d*redStart, 2*d*redEnd), 
+    guard(redIds, redStart, redEnd),
+    blueStart, 
+    blueEnd,
+    guard(blueFlat, 2*d*blueStart, 2*d*blueEnd), 
+    guard(blueIds, blueStart, blueEnd))
 
   result.sort(compareIntervals)
   return result
@@ -88,7 +100,9 @@ function algorithmicRBIntersect(
 tape('sweep1D', function(t) {
 
   function full(boxes) {
-    t.same(algorithmicIntersect(boxes), bruteForceIntersect(boxes))
+    t.same(
+      algorithmicIntersect(boxes), 
+      bruteForceIntersect(boxes))
   }
 
   function bipartite(
@@ -98,7 +112,7 @@ tape('sweep1D', function(t) {
       algorithmicRBIntersect(
         redStart, redEnd, red, 
         blueStart, blueEnd, blue), 
-      bruteForceIntersect(
+      bruteForceRBIntersect(
         redStart, redEnd, red, 
         blueStart, blueEnd, blue))
   }
@@ -112,12 +126,12 @@ tape('sweep1D', function(t) {
     [2,2],
     [-10, 10]
   ])
-
+ 
   bipartite(
     0, 7,
     [
       [0,0],
-      [1,-1],
+      [-1,1],
       [0,2],
       [1,2],
       [2,3],
@@ -130,12 +144,15 @@ tape('sweep1D', function(t) {
       [2,2],
       [-1, 3] ])
 
+
   for(var i=0; i<10; ++i) {
     var red = []
     var blue = []
     for(var j=0; j<100; ++j) {
-      red.push([Math.random(), Math.random()])
-      blue.push([Math.random(), Math.random()])
+      var rs = Math.random()
+      var bs = Math.random()
+      red.push([rs, rs+Math.random()])
+      blue.push([bs, bs+Math.random()])
     }
     full(red)
     full(blue)

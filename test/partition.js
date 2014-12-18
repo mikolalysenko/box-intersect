@@ -1,6 +1,7 @@
 'use strict'
 
 var tape = require('tape')
+var guard = require('guarded-array')
 var iota = require('iota-array')
 var genBoxes = require('./util/random-boxes')
 var partition = require('../lib/boxnd').partition
@@ -37,7 +38,10 @@ tape('partitionBoxes', function(t) {
       var boxFlat = genBoxes.flatten(boxes)
       var boxIds = iota(n)
 
-      var mid = partition(d, axis, start, end, boxFlat, boxIds, pred, a, b)
+      var mid = partition(d, axis, start, end, 
+        guard(boxFlat, 2*d*start, 2*d*end), 
+        guard(boxIds, start, end), 
+        pred, a, b)
       t.ok(start <= mid && mid <= end, 'mid (' + mid + ') in range ' + start + '-' + end)
       for(var i=0; i<start; ++i) {
         t.equals(boxIds[i], i, '< start ok')

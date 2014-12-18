@@ -1,6 +1,7 @@
 'use strict'
 
 var tape       = require('tape')
+var guard      = require('guarded-array')
 var iota       = require('iota-array')
 var genBoxes   = require('./util/random-boxes')
 var bruteForcePartial = require('../lib/boxnd').brute
@@ -56,9 +57,15 @@ tape('bruteForcePartial', function(t) {
       }
 
       bruteForcePartial(d, axis, visit, flip,
-        redStart, redEnd, red, redIds,
-        blueStart, blueEnd, blue, blueIds)
-      
+        redStart, 
+        redEnd, 
+        guard(red, 2*d*redStart, 2*d*redEnd), 
+        guard(redIds, redStart, redEnd),
+        blueStart, 
+        blueEnd, 
+        guard(blue, 2*d*blueStart, 2*d*blueEnd),
+        guard(blueIds, blueStart, blueEnd))
+
       var elist = []
       for(var i=redStart; i<redEnd; ++i) {
         for(var j=blueStart; j<blueEnd; ++j) {
@@ -75,11 +82,7 @@ tape('bruteForcePartial', function(t) {
           }
 
           if(partialOverlap(d, axis+1, a, b)) {
-            if(flip) {
-              elist.push([j,i])
-            } else {
-              elist.push([i,j])
-            }
+            elist.push([i,j])
           }
         }
       }
@@ -96,8 +99,8 @@ tape('bruteForcePartial', function(t) {
     testRange(n>>>1, n-1, m>>>1, m-1)
   }
 
-  verify(2, 0, false, [[0, 0, 1, 1]], [[0,0,1,1]])
-  verify(2, 0, true, [[0, 0, 1, 1]], [[0,0,1,1]])
+  verify(2, 0, false, [[0, 0, 1, 1]], [[100,100,100,100],[0,0,1,1],[0.5,0.5,1,1]])
+  verify(2, 0, true, [[0, 0, 1, 1]], [[100,100,100,100],[0,0,1,1],[0.5,0.5,1,1]])
 
   genBoxes.hard.forEach(function(c) {
     var red = c.red

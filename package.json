@@ -31,7 +31,9 @@
   "devDependencies": {
     "cannon": "^0.6.1",
     "cartesian-product": "^2.1.2",
+    "dup": "^1.0.0",
     "gauss-random": "^1.0.0",
+    "guarded-array": "^1.0.0",
     "iota-array": "^1.0.0",
     "p2": "^0.6.0",
     "rbush": "^1.3.4",
