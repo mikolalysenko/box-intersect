@@ -3,6 +3,7 @@
 var tape = require('tape')
 var dup = require('dup')
 var iota = require('iota-array')
+var guard = require('guarded-array')
 var genBoxes = require('./util/random-boxes')
 var median = require('../lib/boxnd').median
 
@@ -13,10 +14,10 @@ function slowMedian(data, lo, hi) {
   })
   var mid = (lo + hi)>>>1
   var midV = sorted[mid]
-  while(mid > lo && sorted[mid-1] === midV) {
-    mid -= 1
+  while(mid < hi && sorted[mid+1] === midV) {
+    mid += 1
   }
-  return [mid, midV]
+  return [mid+1, midV]
 }
 
 function toBoxes(data, d, axis) {
@@ -35,39 +36,17 @@ function toBoxes(data, d, axis) {
   return result
 }
 
-function makeProperty(data, i) {
-  return {
-    set: 
-  }
-}
-
-function makeGuardedArray(n, lo, hi) {
-  var store = iota(n)
-  var result = {
-    length: n
-  }
-  var props = {}
-  for(var i=0; i<n; ++i) {
-    if(i < lo || i >= hi) {
-      props[i] = makeGuard()
-    } else {
-      props[i] = makeProperty(store, i)
-    }
-  }
-  Object.defineProperties(result, props)
-  return result
-}
 
 tape('findMedian', function(t) {
 
   function verify(data, lo, hi) {
+    //console.log(data)
     if(lo === void 0) {
       lo = 0
     }
     if(hi === void 0) {
       hi = data.length
     }
-    console.log(lo, hi)
     var expectedResult = slowMedian(data, lo, hi)
     var expectedIndex  = expectedResult[0]
     var expectedMedian = expectedResult[1]
@@ -77,20 +56,25 @@ tape('findMedian', function(t) {
       for(var axis=0; axis<d; ++axis) {
         var boxes = toBoxes(data, d, axis)
         var flatBoxes = genBoxes.flatten(boxes)
+        //console.log(flatBoxes)
         var indices = iota(data.length)
 
-        var computedMedian = median(
+        var computedIndex = median(
           d, axis, 
-          lo, hi, flatBoxes, indices)
+          lo, hi, 
+          guard(flatBoxes, 2*d*lo, 2*d*hi), 
+          guard(indices, lo, hi))
 
-        t.equals(computedMedian, expectedMedian, 'median ok')
-        t.equals(flatBoxes[computedMedian*2*d+axis], expectedMedian, 'value ok')
+        //console.log(flatBoxes)
 
-        for(var i=lo; i<computedMedian; ++i) {
-          t.ok(flatBoxes[2*d*i+axis] < expectedMedian, 'partition below ok')
+        t.equals(computedIndex, expectedIndex, 'median ok')
+        t.equals(flatBoxes[(computedIndex-1)*2*d+axis], expectedMedian, 'value ok')
+
+        for(var i=lo; i<computedIndex; ++i) {
+          t.ok(flatBoxes[2*d*i+axis] <= expectedMedian, 'partition below ok')
         }
-        for(var i=computedMedian; i<hi; ++i) {
-          t.ok(flatBoxes[2*d*i+axis] >= expectedMedian, 'partition above ok')
+        for(var i=computedIndex; i<hi; ++i) {
+          t.ok(flatBoxes[2*d*i+axis] > expectedMedian, 'partition above ok')
         }
         for(var i=0; i<lo; ++i) {
           t.equals(indices[i], i, 'lo untouched')
@@ -112,22 +96,49 @@ tape('findMedian', function(t) {
     }
   }
 
+  verify([0,1,2,3,4,5,6,6,6,6,6,6,6,6,7,8,9])
+  
+  var brutal = dup([10], 0)
+  brutal[0] = 1
+  verify(brutal)
+  brutal[0] = -1
+  verify(brutal)
+  brutal[9] = 1
+  verify(brutal)
 
-  //verify([0])
-  verify([5, 4, 3, 2, 1,0])
-  /*
+  brutal = dup([10], 0)
+  brutal[9] = 1
+  verify(brutal)
+  brutal[9] = -1
+  verify(brutal)
+  brutal[0] = 1
+  verify(brutal)
+  
+  verify([0])
+  verify([5, 4, 3, 2, 1, 0])
   verify([0,1,2,3,4,5])
   verify([1, -1, 0, 1, 1, 2])
   verify([0, 1, 1, 1, 1, 1, 2])
   verify([0,0,0,0,0])
-  verify(dup([100], 0))
-  verify([0,1,2,3,4,5,6,6,6,6,6,6,6,6,7,8,9])
+  verify(dup([32], 0))
+  
+  verify([ 
+    0.9191182393115014,
+    0.82473976444453,
+    0.5173067646101117,
+    0.370650454191491,
+    0.9679583257529885,
+    0.6838582328055054,
+    0.19114303076639771,
+    0.5988740497268736,
+    0.9954310422763228,
+    0.9333904932718724 ])
+
   for(var i=0; i<10; ++i) {
     verify(dup([100], 0).map(function() {
       return Math.random()
     }))
   }
-  */
 
   t.end()
 })

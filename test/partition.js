@@ -70,6 +70,9 @@ tape('partitionBoxes', function(t) {
     }
   }
 
+  var dboxes = genBoxes.degenerate(2)
+  verifyPartition(2, dboxes, 0, dboxes.length, intervalStartLessThan, 0.1)
+
   for(var d=2; d<=4; ++d) {
     for(var i=0; i<4; ++i) {
       var boxes = genBoxes.random(32, d)
