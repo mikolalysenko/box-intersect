@@ -14,10 +14,11 @@ function slowMedian(data, lo, hi) {
   })
   var mid = (lo + hi)>>>1
   var midV = sorted[mid]
-  while(mid < hi && sorted[mid+1] === midV) {
-    mid += 1
+  while(lo < mid && 
+    sorted[mid-1] === midV) {
+    mid -= 1
   }
-  return [mid+1, midV]
+  return [mid, midV]
 }
 
 function toBoxes(data, d, axis) {
@@ -32,15 +33,12 @@ function toBoxes(data, d, axis) {
     box[axis] = data[i]
     result[i] = box
   }
-
   return result
 }
-
 
 tape('findMedian', function(t) {
 
   function verify(data, lo, hi) {
-    //console.log(data)
     if(lo === void 0) {
       lo = 0
     }
@@ -56,7 +54,6 @@ tape('findMedian', function(t) {
       for(var axis=0; axis<d; ++axis) {
         var boxes = toBoxes(data, d, axis)
         var flatBoxes = genBoxes.flatten(boxes)
-        //console.log(flatBoxes)
         var indices = iota(data.length)
 
         var computedIndex = median(
@@ -65,16 +62,18 @@ tape('findMedian', function(t) {
           guard(flatBoxes, 2*d*lo, 2*d*hi), 
           guard(indices, lo, hi))
 
-        //console.log(flatBoxes)
-
         t.equals(computedIndex, expectedIndex, 'median ok')
-        t.equals(flatBoxes[(computedIndex-1)*2*d+axis], expectedMedian, 'value ok')
+        
+        console.log(flatBoxes.filter(function(v,i) {
+          return (i%(2*d))===axis
+        }))
 
         for(var i=lo; i<computedIndex; ++i) {
           t.ok(flatBoxes[2*d*i+axis] <= expectedMedian, 'partition below ok')
         }
-        for(var i=computedIndex; i<hi; ++i) {
-          t.ok(flatBoxes[2*d*i+axis] > expectedMedian, 'partition above ok')
+        t.equals(flatBoxes[computedIndex*2*d+axis], expectedMedian, 'partition ok')
+        for(var i=computedIndex+1; i<hi; ++i) {
+          t.ok(flatBoxes[2*d*i+axis] >= expectedMedian, 'partition above ok')
         }
         for(var i=0; i<lo; ++i) {
           t.equals(indices[i], i, 'lo untouched')
@@ -139,6 +138,6 @@ tape('findMedian', function(t) {
       return Math.random()
     }))
   }
-
+  
   t.end()
 })
