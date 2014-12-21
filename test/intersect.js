@@ -4,7 +4,9 @@ var tape = require('tape')
 var guard = require('guarded-array')
 var iota = require('iota-array')
 var genBoxes = require('./util/random-boxes')
-var boxIntersectRec = require('../lib/boxnd').intersect
+var boxnd = require('../lib/boxnd')
+var boxIntersectRec = boxnd.intersect
+var sqInit = boxnd.sweepInit
 
 // Signature:
 //
@@ -113,6 +115,9 @@ tape('boxIntersectRec', function(t) {
     var blueFlat = genBoxes.flatten(blue)
     var blueIds = iota(blue.length)
 
+    sqInit(Math.max(red.length,blue.length)|0)
+
+
     var actual = []
     function visit(i,j) {
       if(flip) {
@@ -132,6 +137,14 @@ tape('boxIntersectRec', function(t) {
         }
       }
 
+      /*
+      for(var k=0; k<actual.length; ++k) {
+        var p = actual[k]
+        if(p[0] === i && p[1] === j) {
+          throw new Error('visiting pair twice')
+        }
+      }
+      */
       actual.push([i,j])
     }
     boxIntersectRec(
