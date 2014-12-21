@@ -46,13 +46,23 @@ function cartesianProduct(a, b) {
   return result
 }
 
+function testValid(box) {
+  var d = (box.length>>1)
+  for(var i=0; i<d; ++i) {
+    if(box[i+d] < box[i]) {
+      return false
+    }
+  }
+  return true
+}
+
 function degenerateBox(d) {
   var SAMPLE_POINTS = [ -1, 0, 0, 1 ]
   var result = [ [] ]
   for(var i=0; i<2*d; ++i) {
     result = cartesianProduct(result, SAMPLE_POINTS)
   }
-  return result
+  return result.filter(testValid)
 }
 
 var HARD_CASES = [
