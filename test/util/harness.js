@@ -1,5 +1,5 @@
-exports.verifyFull = verifyFull
-exports.verifyBipartite = verifyBipartite
+exports.full = verifyFull
+exports.bipartite = verifyBipartite
 
 var boxIntersect = require('../../index')
 
@@ -50,9 +50,10 @@ function algorithmFullOverlap(boxes) {
 }
 
 function verifyFull(tape, boxes, str) {
-  tape.same(
-    algorithmFullOverlap(boxes),
-    bruteForceFullOverlap(boxes),
+
+  tape.equals(
+    algorithmFullOverlap(boxes).join(':'),
+    bruteForceFullOverlap(boxes).join(':'),
     str)
 }
 

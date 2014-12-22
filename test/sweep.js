@@ -116,7 +116,7 @@ tape('sweep1D', function(t) {
         redStart, redEnd, red, 
         blueStart, blueEnd, blue))
   }
-
+  
   full([
     [0,0],
     [1,-1],
@@ -163,6 +163,13 @@ tape('sweep1D', function(t) {
       20, 24, red, 
       30, 40, blue)
   }
+
+
+  var bigBoxes = genBoxes.degenerate(3).map(function(b) {
+    return [ b[2], b[5] ]
+  })
+  full(bigBoxes)
+  bipartite(0, bigBoxes.length, bigBoxes, 0, bigBoxes.length, bigBoxes)
 
   t.end()
 })

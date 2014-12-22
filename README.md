@@ -130,7 +130,7 @@ The parameters to the function are as follows:
 
 **Returns** If `visit` was specified, then the last returned value of `visit`.  Otherwise an array of pairs of intersecting boxes.
 
-**Note** The boxes are treated as closed intervals.  That is, the boxes `[1,1,2,2]` and `[0,0,1,1]` intersect according to this algorithm.
+**Note** The boxes are treated as cartesian products of *closed* intervals.  For example, the boxes `[1,1,2,2]` and `[0,0,1,1]` will be reported as intersecting by this module.
 
 ### `boxIntersect.direct(boxes, otherBoxes, visit)`
 

@@ -49,14 +49,15 @@ blue_loop:
 //Brute force full test
 function bruteForceFull(d, boxes, visit) {
   var n = boxes.length
+a_loop:
   for(var i=0; i<n; ++i) {
     var a = boxes[i]
     for(var k=0; k<d; ++k) {
       if(a[k+d] < a[k]) {
-        continue
+        continue a_loop
       }
     }
-box_loop:
+b_loop:
     for(var j=0; j<i; ++j) {
       var b = boxes[j]
       for(var k=0; k<d; ++k) {
@@ -65,7 +66,7 @@ box_loop:
         var b0 = b[k]
         var b1 = b[k+d]
         if(b1 < b0 || b1 < a0 || a1 < b0) {
-          continue box_loop
+          continue b_loop
         }
       }
       var retval = visit(i, j)
@@ -83,13 +84,17 @@ function convertBoxes(boxes, n, d, data, ids) {
 i_loop:
   for(var i=0; i<n; ++i) {
     var b = boxes[i]
+
+    //Make sure b is not empty
     for(var j=0; j<d; ++j) {
       if(b[d+j] < b[j]) {
         continue i_loop
       }
     }
+
+    //If not empty, then append to list
     for(var j=0; j<2*d; ++j) {
-      result[ptr++] = b[j]
+      data[ptr++] = b[j]
     }
     ids[count] = count
     count += 1
@@ -134,7 +139,7 @@ function redBlueIntersect(red, blue, visit) {
 
   //Special case:  1D full intersection, use a different algorithm
   if(d === 1 && full) {
-    return boxnd.sweepFull(visit, n, red)
+    return boxnd.sweepFull(red, visit)
   }
 
   //Otherwise, we use the general purpose algorithm
@@ -151,19 +156,19 @@ function redBlueIntersect(red, blue, visit) {
     //Special case:  1D bipartite intersection
     retval = boxnd.sweep(
       d, visit, 
-      0, n, red,  redIndex,
-      0, m, blue, blueIndex)
+      0, n, redList,  redIds,
+      0, m, blueList, blueIds)
   } else {
     retval = boxnd.intersect(
       d, 0, visit, false,
-      0, n, red,  redIndex,
-      0, m, blue, blueIndex,
+      0, n, redList,  redIds,
+      0, m, blueList, blueIds,
       -Infinity, Infinity)
     if((retval === void 0) && !full) {
       retval = boxnd.intersect(
         d, 0, visit, true,
-        0, m, blue, blueIndex,
-        0, n, red,  redIndex,
+        0, m, blueList, blueIds,
+        0, n, redList,  redIds,
         -Infinity, Infinity)
     }
   }
@@ -183,12 +188,19 @@ function wrapper(arg0, arg1, arg2) {
     case 1:
       result = []
       redBlueIntersect(arg0, arg0, function(i,j) {
-        result.push([i, j])
+        if(i !== j) {
+          result.push([i, j])
+        }
       })
       return result
     case 2:
       if(typeof arg1 === 'function') {
-        return redBlueIntersect(arg0, arg0, arg1)
+        var visit = arg1
+        return redBlueIntersect(arg0, arg0, function(i,j) {
+          if(i !== j) {
+            return visit(i,j)
+          }
+        })
       } else {
         result = []
         redBlueIntersect(arg0, arg1, function(i,j) {
