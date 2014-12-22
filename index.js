@@ -96,7 +96,7 @@ i_loop:
     for(var j=0; j<2*d; ++j) {
       data[ptr++] = b[j]
     }
-    ids[count] = count
+    ids[count] = i
     count += 1
   }
   return count

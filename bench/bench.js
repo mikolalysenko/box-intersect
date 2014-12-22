@@ -8,6 +8,7 @@ var distributions = {
 
 var codes = {
   'brute-force': require('./algorithms/brute-force'),
+  'box-intersect': require('./algorithms/box-intersect'),
   'rbush-incremental': require('./algorithms/rbush/incremental'),
   'rbush-bulk': require('./algorithms/rbush/bulk'),
   'box2d': require('./algorithms/box2d/broadphase'),

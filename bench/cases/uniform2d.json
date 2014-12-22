@@ -2,6 +2,7 @@
   "name": "Uniform 2D",
   "algorithms": [
     "brute-force",
+    "box-intersect",
     "rbush-incremental",
     "rbush-bulk",
     "box2d",

@@ -122,7 +122,6 @@ tape('boxIntersectRec', function(t) {
     var actual = []
     function visit(i,j) {
       if(flip) {
-        //console.log('    report:', [red[j][0], red[j][2]], blue[i][0], [j,i])
         if(red[j][axis] === blue[i][axis]) {
           throw new Error('visiting boxes with common end point')
         }
@@ -132,20 +131,11 @@ tape('boxIntersectRec', function(t) {
           throw new Error('invalid overlap reported')
         }
       } else {
-        //console.log('    report:', [red[i][0], red[i][2]], blue[j][0], [i,j])
         if(!testOverlap(d, axis, flip, red[i], blue[j])) {
           throw new Error('invalid overlap reported')
         }
       }
 
-      /*
-      for(var k=0; k<actual.length; ++k) {
-        var p = actual[k]
-        if(p[0] === i && p[1] === j) {
-          throw new Error('visiting pair twice')
-        }
-      }
-      */
       actual.push([i,j])
     }
     boxIntersectRec(
@@ -162,13 +152,10 @@ tape('boxIntersectRec', function(t) {
       Infinity)
     actual = canonicalizeIntersect(actual)
 
-    console.log('running brute force')
-
     var expected = bruteForceIntersect(
       d, axis, flip,
       redStart, redEnd, red,
       blueStart, blueEnd, blue)
-
 
     t.equal(actual.join(':'), expected.join(':'), 'expected intersections')
     verifyBoxes(d, redStart, redEnd, red, redFlat, redIds, 'red')
