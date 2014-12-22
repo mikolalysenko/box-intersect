@@ -195,15 +195,12 @@ tape('boxIntersectRec', function(t) {
   }
 
 
-  /*
   for(var d=2; d<=4; ++d) {
     verify(
       genBoxes.random(100, d), 
       genBoxes.random(100, d))
   }
-  */
 
-  /*
   verify(genBoxes.random(16, 2), genBoxes.random(16,2))
 
   test1D(
@@ -299,8 +296,7 @@ tape('boxIntersectRec', function(t) {
   verify(
     genBoxes.degenerate(2),
     genBoxes.degenerate(2))
-  */
-
+  
   verify(
     genBoxes.degenerate(3),
     genBoxes.degenerate(3))

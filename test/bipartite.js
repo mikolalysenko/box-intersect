@@ -3,13 +3,7 @@
 var tape = require('tape')
 var harness = require('./util/harness')
 
-tape('box-intersect', function(t) {
-
-  harness.full(t, [
-    [1,2],
-    [2,3],
-    [1,3]
-    ], '1d example')
+tape('bipartite', function(t) {
 
   //Random test cases
   ;[10, 100, 1000].forEach(function(count) {
@@ -28,8 +22,6 @@ tape('box-intersect', function(t) {
           otherBoxes[j] = otherBox
         }
         
-        harness.full(t, boxes, d + 'd full')
-        harness.full(t, otherBoxes, d + 'd full')
         harness.bipartite(t, boxes, otherBoxes, d + 'd bipartite')
       }
     }

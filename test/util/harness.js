@@ -1,7 +1,7 @@
 exports.verifyFull = verifyFull
 exports.verifyBipartite = verifyBipartite
 
-var boxIntersect = require('../index')
+var boxIntersect = require('../../index')
 
 function boxOverlap(d, a, b) {
   for(var i=0; i<d; ++i) {
