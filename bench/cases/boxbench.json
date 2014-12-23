@@ -1,0 +1,16 @@
+{
+  "name": "box intersect param sweep",
+  "algorithms": [
+    "box-intersect"
+  ],
+  "distribution": {
+    "d": 2,
+    "type": "uniform",
+    "lo": [0.001,0.01],
+    "hi": [0.01,0.01]
+  },
+  "sweep": {
+    "n": [10, 1000, 10000, 100000]
+  },
+  "numIters": 5
+}

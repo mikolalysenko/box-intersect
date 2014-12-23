@@ -57,6 +57,10 @@ function runBenchmark(desc) {
       var algorithm = codes[alg]
       var convertedBoxes = algorithm.prepare(boxes)
 
+      for(var i=0; i<5; ++i) {
+        algorithm.run(convertedBoxes)
+      }
+
       var tStart = Date.now()
       var counter = 0
       for(var i=0; i<numIters; ++i) {
