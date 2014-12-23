@@ -24,7 +24,7 @@ tape('full intersect', function(t) {
           boxes[j] = box
         }
         
-        harness.full(t, boxes, d + 'd full')
+        harness.full(t, boxes, d + 'd full n=' + count)
       }
     }
   })

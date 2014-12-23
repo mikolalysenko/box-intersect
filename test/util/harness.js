@@ -28,6 +28,7 @@ function compareResult(a, b) {
 }
 
 function bruteForceFullOverlap(boxes) {
+  console.log('brute force...')
   var d = (boxes[0].length)>>>1
   var result = []
   for(var i=0; i<boxes.length; ++i) {
@@ -42,6 +43,7 @@ function bruteForceFullOverlap(boxes) {
 }
 
 function algorithmFullOverlap(boxes) {
+  console.log('algorithm...')
   var result = boxIntersect(boxes).map(function(pair) {
     return [ Math.min(pair[0], pair[1]), Math.max(pair[0], pair[1]) ]
   })
@@ -59,6 +61,7 @@ function verifyFull(tape, boxes, str) {
 
 
 function bruteForceBipartiteOverlap(boxes, otherBoxes) {
+  console.log('brute force...')
   var d = (boxes[0].length)>>>1
   var result = []
   for(var i=0; i<boxes.length; ++i) {
@@ -73,14 +76,15 @@ function bruteForceBipartiteOverlap(boxes, otherBoxes) {
 }
 
 function algorithmPartialOverlap(boxes, otherBoxes) {
+  console.log('algorithm...')
   var result = boxIntersect(boxes, otherBoxes)
   result.sort(compareResult)
   return result
 }
 
 function verifyBipartite(tape, boxes, otherBoxes, str) {
-  tape.same(
-    algorithmPartialOverlap(boxes, otherBoxes),
-    bruteForceBipartiteOverlap(boxes, otherBoxes),
+  tape.equals(
+    algorithmPartialOverlap(boxes, otherBoxes).join(':'),
+    bruteForceBipartiteOverlap(boxes, otherBoxes).join(':'),
     str)
 }

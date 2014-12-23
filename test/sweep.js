@@ -31,7 +31,7 @@ function canonicalizeIntervals(intervals) {
 function bruteForceIntersect(boxes) {
   var result = []
   for(var i=0; i<boxes.length; ++i) {
-    for(var j=0; j<=i; ++j) {
+    for(var j=0; j<i; ++j) {
       if(intervalOverlap(boxes[i], boxes[j])) {
         result.push([j,i])
       }

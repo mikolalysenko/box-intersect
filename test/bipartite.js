@@ -6,7 +6,7 @@ var harness = require('./util/harness')
 tape('bipartite', function(t) {
 
   //Random test cases
-  ;[10, 100, 1000].forEach(function(count) {
+  ;[10, 100, 1000, 5000].forEach(function(count) {
     for(var d=1; d<=4; ++d) {
       for(var i=0; i<10; ++i) {
         var boxes = new Array(count)
@@ -22,7 +22,7 @@ tape('bipartite', function(t) {
           otherBoxes[j] = otherBox
         }
         
-        harness.bipartite(t, boxes, otherBoxes, d + 'd bipartite')
+        harness.bipartite(t, boxes, otherBoxes, d + 'd bipartite n=' + count)
       }
     }
   })
