@@ -1,6 +1,8 @@
 exports.full = verifyFull
 exports.bipartite = verifyBipartite
 
+var util = require('util')
+var diff = require('./diff')
 var boxIntersect = require('../../index')
 
 function boxOverlap(d, a, b) {
@@ -53,10 +55,23 @@ function algorithmFullOverlap(boxes) {
 
 function verifyFull(tape, boxes, str) {
 
-  tape.equals(
-    algorithmFullOverlap(boxes).join(':'),
-    bruteForceFullOverlap(boxes).join(':'),
-    str)
+  var expectedBoxes = bruteForceFullOverlap(boxes)
+  var actualBoxes   = algorithmFullOverlap(boxes)
+
+  if(expectedBoxes.join(':') === actualBoxes.join(':')) {
+    tape.pass(str)
+  } else {
+
+    console.log(boxes)
+
+    for(var i=0; i<actualBoxes.length; ++i) {
+      console.log(i, actualBoxes[i], expectedBoxes[i])
+    }
+
+    console.log(util.inspect(
+      diff(actualBoxes, expectedBoxes)))
+    tape.fail(str)
+  }
 }
 
 

@@ -14,3 +14,7 @@ results
 npm-debug.log
 node_modules/*
 *.DS_Store
+*.asm
+*.cfg
+bench/irhydra.html
+bench/test.html

@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "test": "tape test/*.js",
+    "irhydra": "browserify bench/run.js | indexhtmlify > bench/irhydra.html && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --no-sandbox --js-flags=\"--trace-hydrogen --trace-phase=Z --trace-deopt --code-comments --hydrogen-track-positions --redirect-code-traces\" bench/irhydra.html",
+    "perf": "browserify bench/run.js | indexhtmlify > bench/irhydra.html && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --no-sandbox --js-flags=\"--trace-opt --trace-inline --trace-deopt --code-comments --trap-on-deopt\" bench/irhydra.html"
   },
   "repository": {
     "type": "git",
@@ -29,11 +31,13 @@
   },
   "homepage": "https://github.com/mikolalysenko/box-intersect",
   "devDependencies": {
+    "browserify": "^8.0.1",
     "cannon": "^0.6.1",
     "cartesian-product": "^2.1.2",
     "dup": "^1.0.0",
     "gauss-random": "^1.0.0",
     "guarded-array": "^1.0.0",
+    "indexhtmlify": "^1.2.0",
     "iota-array": "^1.0.0",
     "p2": "^0.6.0",
     "rbush": "^1.3.4",

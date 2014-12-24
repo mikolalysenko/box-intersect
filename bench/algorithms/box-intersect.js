@@ -12,6 +12,6 @@ exports.run     = function(boxes) {
     if(i !== j) {
       count += 1
     }
-  })
+  }, true)
   return count
 }

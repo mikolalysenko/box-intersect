@@ -1,6 +1,7 @@
 'use strict'
 
 var tape = require('tape')
+var genBoxes = require('./util/random-boxes')
 var harness = require('./util/harness')
 
 tape('full intersect', function(t) {

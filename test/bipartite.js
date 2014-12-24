@@ -6,23 +6,30 @@ var harness = require('./util/harness')
 tape('bipartite', function(t) {
 
   //Random test cases
-  ;[10, 100, 1000, 5000].forEach(function(count) {
+  ;[10, 100, 1000, 5000].forEach(function(countR) {
     for(var d=1; d<=4; ++d) {
       for(var i=0; i<10; ++i) {
-        var boxes = new Array(count)
-        var otherBoxes = new Array(count)
-        for(var j=0; j<count; ++j) {
+        var boxes = new Array(countR)
+        for(var j=0; j<countR; ++j) {
           var box = new Array(2*d)
-          var otherBox = new Array(2*d)
           for(var k=0; k<2*d; ++k) {
-            box[k] = Math.random()
-            otherBox[k] = Math.random()
+              box[k] = Math.random()
           }
           boxes[j] = box
-          otherBoxes[j] = otherBox
         }
-        
-        harness.bipartite(t, boxes, otherBoxes, d + 'd bipartite n=' + count)
+        harness.bipartite(t, boxes, boxes, d + 'd sym bipartite n=' + countR)
+
+        ;[10, 100, 1000, 5000].forEach(function(countB) {
+          var otherBoxes = new Array(countB)
+          for(var j=0; j<countB; ++j) {
+            var box = new Array(2*d)
+            for(var k=0; k<2*d; ++k) {
+                box[k] = Math.random()
+            }
+            otherBoxes[j] = box
+          }
+          harness.bipartite(t, boxes, otherBoxes, d + 'd bipartite n=' + countR + '/m=' + countB)
+        })
       }
     }
   })

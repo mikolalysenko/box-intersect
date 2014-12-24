@@ -100,22 +100,29 @@ function algorithmicRBIntersect(
 tape('sweep1D', function(t) {
 
   function full(boxes) {
-    t.same(
-      algorithmicIntersect(boxes), 
-      bruteForceIntersect(boxes))
+    t.equals(
+      algorithmicIntersect(boxes).join(':'), 
+      bruteForceIntersect(boxes).join(':'))
   }
 
   function bipartite(
     redStart, redEnd, red, 
     blueStart, blueEnd, blue) {
-    t.same(
-      algorithmicRBIntersect(
+
+    var actual = algorithmicRBIntersect(
         redStart, redEnd, red, 
-        blueStart, blueEnd, blue), 
-      bruteForceRBIntersect(
+        blueStart, blueEnd, blue)
+    var expected = bruteForceRBIntersect(
         redStart, redEnd, red, 
-        blueStart, blueEnd, blue))
+        blueStart, blueEnd, blue)
+
+    actual.forEach(function(e, i) {
+      console.log(i, e, expected[i])
+    })
+
+    t.equals(actual.join(';'), expected.join(';'))
   }
+  /*
   
   full([
     [0,0],
@@ -162,13 +169,15 @@ tape('sweep1D', function(t) {
     bipartite(
       20, 24, red, 
       30, 40, blue)
-  }
+  }  
+  */
 
 
   var bigBoxes = genBoxes.degenerate(3).map(function(b) {
     return [ b[2], b[5] ]
   })
-  full(bigBoxes)
+
+  //full(bigBoxes)
   bipartite(0, bigBoxes.length, bigBoxes, 0, bigBoxes.length, bigBoxes)
 
   t.end()

@@ -34,6 +34,7 @@ function testOverlap(d, flip, r, b) {
   var r0 = r[axis]
   var r1 = r[axis+d]
   var b0 = b[axis]
+  var b1 = b[axis+d]
   if(b0 < r0 || r1 < b0) {
     return false
   }
@@ -115,7 +116,6 @@ tape('boxIntersectIter', function(t) {
     var blueFlat = genBoxes.flatten(blue)
     var blueIds = iota(blue.length)
 
-
     var redStart = 0
     var redEnd = red.length
     var blueStart = 0
@@ -126,14 +126,13 @@ tape('boxIntersectIter', function(t) {
 
     var actual = []
     function visit(i,j) {
+      //console.log('\tvisit', i, j, red[i], blue[j])
 
       if(flip) {
-        if(red[j][0] === blue[i][0]) {
+        if(red[i][0] === blue[j][0]) {
           throw new Error('visiting boxes with common end point')
         }
-
-        //Check overlap
-        if(!testOverlap(d, flip, red[j], blue[i])) {
+        if(!testOverlap(d, flip, blue[j], red[i])) {
           throw new Error('invalid overlap reported')
         }
       } else {
@@ -155,10 +154,19 @@ tape('boxIntersectIter', function(t) {
       guard(blueIds, blueStart, blueEnd))
     actual = canonicalizeIntersect(actual)
 
-    var expected = bruteForceIntersect(
-      d, flip,
-      redStart, redEnd, red,
-      blueStart, blueEnd, blue)
+    var expected
+
+    if(flip) {
+      expected = bruteForceIntersect(
+        d, true,
+        blueStart, blueEnd, blue,
+        redStart, redEnd, red)
+    } else {
+      expected = bruteForceIntersect(
+        d, false,
+        redStart, redEnd, red,
+        blueStart, blueEnd, blue)
+    }
 
     t.equal(actual.join(':'), expected.join(':'), 'expected intersections')
     verifyBoxes(d, redStart, redEnd, red, redFlat, redIds, 'red')
@@ -167,7 +175,7 @@ tape('boxIntersectIter', function(t) {
 
   function verify(red, blue) {
     var d = (red[0].length>>>1)
-    for(var flip=0; flip<2; ++flip) { //TODO: Change this back to start from 0
+    for(var flip=0; flip<2; ++flip) {
       verifyIntersect(d, flip, red, blue)
     }
   }
@@ -176,14 +184,45 @@ tape('boxIntersectIter', function(t) {
     verify(liftBoxes(red), liftBoxes(blue))
   }
 
+  function verifyDupe(boxes) {
+    verify(boxes, boxes)
+  }
+
+  function verifyDupe1D(boxes) {
+    var lifted = liftBoxes(boxes)
+    verify(lifted, lifted)
+  }
+
+  verify(
+    genBoxes.random(200, 2), 
+    genBoxes.random(50, 2))
+
+  verifyDupe1D(
+    [ [ 0.18938103900291026, 0.7061685477383435 ],
+    [ 0.9226114833727479, 1.2856494062580168 ],
+    [ 0.3661293820478022, 0.8289455785416067 ],
+    [ 0.4401386131066829, 1.3658635288011283 ],
+    [ 0.779426485998556, 1.5643593447748572 ],
+    [ 0.8874769012909383, 1.6818850559648126 ],
+    [ 0.4854744207113981, 0.749912568833679 ],
+    [ 0.6239485782571137, 1.5382558887358755 ],
+    [ 0.13101207045838237, 0.25228343228809536 ],
+    [ 0.2223381686490029, 0.649963942123577 ] ])
+
   for(var d=2; d<=4; ++d) {
     for(var k=0; k<5; ++k) {
       verify(
         genBoxes.random(100, d), 
         genBoxes.random(100, d))
+
+      verifyDupe(genBoxes.random(100, d))
+
+      verify(
+        genBoxes.random(200, d), 
+        genBoxes.random(50, d))
     }
   }
-  
+
   verify(genBoxes.random(16, 2), genBoxes.random(16,2))
 
   test1D(
@@ -281,8 +320,7 @@ tape('boxIntersectIter', function(t) {
     genBoxes.degenerate(2))
 
   var clippedBoxes = genBoxes.degenerate(3)
-
   verify(clippedBoxes, clippedBoxes)
-
+  
   t.end()
 })
