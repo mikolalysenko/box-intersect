@@ -132,10 +132,6 @@ The parameters to the function are as follows:
 
 **Note** The boxes are treated as cartesian products of *closed* intervals.  For example, the boxes `[1,1,2,2]` and `[0,0,1,1]` will be reported as intersecting by this module.
 
-### `boxIntersect.direct(boxes, otherBoxes, visit)`
-
-Internally both of the above modes are implemented in terms of bipartite intersection detection.  To skip the overhead of calling the wrapper, you can also call the underlying bipartite intersection algorithm directly.  This requires that you pass in `boxes`, `otherBoxes` and `visit` as in the above case.  Under the hood, all intersection checks are implemented using this method.
-
 # License
 
 (c) 2014 Mikola Lysenko. MIT License
