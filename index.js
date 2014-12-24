@@ -103,7 +103,7 @@ i_loop:
 }
 
 //Internal algorithm, exposed as .direct()
-function redBlueIntersect(red, blue, visit) {
+function redBlueIntersect(red, blue, visit, full) {
   var n = red.length
   var m = blue.length
 
@@ -117,9 +117,6 @@ function redBlueIntersect(red, blue, visit) {
   if(d <= 0) {
     return
   }
-
-  //Test for bipartite or full intersection
-  var full = (red === blue)
 
   //If either n or m is small, then use brute force
   if(n < BRUTE_FORCE_CUTOFF || 
@@ -159,17 +156,16 @@ function redBlueIntersect(red, blue, visit) {
       0, n, redList,  redIds,
       0, m, blueList, blueIds)
   } else {
-    retval = boxnd.intersect(
-      d, 0, visit, false,
-      0, n, redList,  redIds,
-      0, m, blueList, blueIds,
-      -Infinity, Infinity)
+    boxnd.iterInit(d, Math.max(n,m)|0)
+    retval = boxnd.intersectIter(
+      d, visit,    false,
+      n, redList,  redIds,
+      m, blueList, blueIds)
     if((retval === void 0) && !full) {
-      retval = boxnd.intersect(
-        d, 0, visit, true,
-        0, m, blueList, blueIds,
-        0, n, redList,  redIds,
-        -Infinity, Infinity)
+      retval = boxnd.intersectIter(
+        d, visit,    true,
+        n, redList,  redIds,
+        m, blueList, blueIds)
     }
   }
 
@@ -191,7 +187,7 @@ function wrapper(arg0, arg1, arg2) {
         if(i !== j) {
           result.push([i, j])
         }
-      })
+      }, true)
       return result
     case 2:
       if(typeof arg1 === 'function') {
@@ -200,16 +196,16 @@ function wrapper(arg0, arg1, arg2) {
           if(i !== j) {
             return visit(i,j)
           }
-        })
+        }, true)
       } else {
         result = []
         redBlueIntersect(arg0, arg1, function(i,j) {
           result.push([i, j])
-        })
+        }, false)
         return result
       }
     case 3:
-      return redBlueIntersect(arg0, arg1, arg2)
+      return redBlueIntersect(arg0, arg1, arg2, false)
     default:
       throw new Error('box-intersect: Invalid arguments')
   }
