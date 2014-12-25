@@ -103,11 +103,13 @@ overlap: [ 0, 0, 0, 1, 1, 8 ] [ 0, 0, 5, 10, 10, 10 ]
 
 # Install
 
+Using [npm](https://www.npmjs.org/), just run the following command:
+
 ```sh
 npm install box-intersect
 ```
 
-Works in any reasonable CommonJS environment (includes browsersify, iojs and node.js)
+This module works in any reasonable CommonJS environment (includes browsersify, iojs and node.js).
 
 # API
 
