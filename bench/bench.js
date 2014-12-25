@@ -3,7 +3,9 @@
 module.exports = runBenchmark
 
 var distributions = {
-  uniform:   require('./generators/uniform')
+  uniform:   require('./generators/uniform'),
+  diamond:   require('./generators/diamond'),
+
 }
 
 var codes = {
