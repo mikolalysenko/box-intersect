@@ -1,16 +1,17 @@
 {
   "name": "box intersect param sweep",
   "algorithms": [
-    "box-intersect"
+    "box-intersect",
+    "rbush-incremental"
   ],
   "distribution": {
     "d": 2,
     "type": "uniform",
-    "lo": [0.0001,0.0001],
-    "hi": [0.001,0.001]
+    "lo": [0.00001,0.00001],
+    "hi": [0.0001,0.0001]
   },
   "sweep": {
-    "n": [10, 1000, 10000, 100000, 1000000]
+    "n": [10, 1000, 10000, 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000]
   },
   "numIters": 5
 }
