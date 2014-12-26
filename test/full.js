@@ -6,6 +6,7 @@ var harness = require('./util/harness')
 
 tape('full intersect', function(t) {
 
+  /*
   harness.full(t, [
     [1,2],
     [2,3],
@@ -29,6 +30,13 @@ tape('full intersect', function(t) {
       }
     }
   })
+  */
+
+  harness.full(t, genBoxes.diamonds(8, 2), '2d diamond n=1000')
+  /*
+  harness.full(t, genBoxes.diamonds(1000, 3), '3d diamond n=1000')
+  harness.full(t, genBoxes.diamonds(1000, 4), '4d diamond n=1000')
+  */
 
   t.end()
 })

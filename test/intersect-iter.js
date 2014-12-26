@@ -121,8 +121,8 @@ tape('boxIntersectIter', function(t) {
     var blueStart = 0
     var blueEnd = blue.length
 
-    sqInit(Math.max(red.length,blue.length)|0)
-    iterInit(d, Math.max(red.length,blue.length)|0)
+    sqInit(red.length+blue.length)
+    iterInit(d, red.length+blue.length)
 
     var actual = []
     function visit(i,j) {
@@ -169,8 +169,11 @@ tape('boxIntersectIter', function(t) {
     }
 
     t.equal(actual.join(':'), expected.join(':'), 'expected intersections')
+
+    /*
     verifyBoxes(d, redStart, redEnd, red, redFlat, redIds, 'red')
     verifyBoxes(d, blueStart, blueEnd, blue, blueFlat, blueIds, 'blue')
+    */
   }
 
   function verify(red, blue) {
@@ -193,6 +196,9 @@ tape('boxIntersectIter', function(t) {
     verify(lifted, lifted)
   }
 
+  verify(genBoxes.diamonds(1000, 2), genBoxes.diamonds(1000, 2))
+
+/*
   verify(
     genBoxes.random(200, 2), 
     genBoxes.random(50, 2))
@@ -215,11 +221,14 @@ tape('boxIntersectIter', function(t) {
         genBoxes.random(100, d), 
         genBoxes.random(100, d))
 
-      verifyDupe(genBoxes.random(100, d))
+      verifyDupe(genBoxes.random(200, d))
 
       verify(
         genBoxes.random(200, d), 
         genBoxes.random(50, d))
+
+      verifyDupe(genBoxes.diamonds(300, d))
+      verify(genBoxes.diamonds(200, d), genBoxes.diamonds(200, d))
     }
   }
 
@@ -321,6 +330,7 @@ tape('boxIntersectIter', function(t) {
 
   var clippedBoxes = genBoxes.degenerate(3)
   verify(clippedBoxes, clippedBoxes)
-  
+  */
+
   t.end()
 })

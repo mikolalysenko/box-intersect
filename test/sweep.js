@@ -74,7 +74,7 @@ function algorithmicRBIntersect(
     result.push([i,j])
   }
 
-  boxnd.sweepInit(Math.max(red.length, blue.length))
+  boxnd.sweepInit(red.length+blue.length)
 
   var d = (red[0].length>>>1)
 
@@ -122,7 +122,7 @@ tape('sweep1D', function(t) {
 
     t.equals(actual.join(';'), expected.join(';'))
   }
-  
+
   full([
     [0,0],
     [1,-1],

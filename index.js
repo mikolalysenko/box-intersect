@@ -3,7 +3,7 @@
 module.exports           = wrapper
 module.exports.direct    = redBlueIntersect
 
-var BRUTE_FORCE_CUTOFF   = 128
+var BRUTE_FORCE_CUTOFF   = 2
 
 var pool  = require('typedarray-pool')
 var boxnd = require('./lib/boxnd')
@@ -132,7 +132,7 @@ function redBlueIntersect(red, blue, visit, full) {
   }
 
   //Initialize sweep queue
-  boxnd.sweepInit(Math.max(n, m))
+  boxnd.sweepInit(n+m)
 
   //Special case:  1D full intersection, use a different algorithm
   if(d === 1 && full) {
@@ -157,7 +157,7 @@ function redBlueIntersect(red, blue, visit, full) {
       0, m, blueList, blueIds)
   } else {
     //General case: Use 
-    boxnd.iterInit(d, (n+m))
+    boxnd.iterInit(d, n+m)
     retval = boxnd.intersectIter(
       d, visit,    false,
       n, redList,  redIds,
