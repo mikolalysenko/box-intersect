@@ -69,7 +69,7 @@ b_loop:
           continue b_loop
         }
       }
-      var retval = visit(i, j)
+      var retval = visit(j, i)
       if(retval !== void 0) {
         return retval
       }
@@ -162,7 +162,7 @@ function redBlueIntersect(red, blue, visit, full) {
       d, visit,    false,
       n, redList,  redIds,
       m, blueList, blueIds)
-    if((retval === void 0) && !full) {
+    if(retval === void 0) {
       retval = boxnd.intersectIter(
         d, visit,    true,
         n, redList,  redIds,
@@ -185,7 +185,7 @@ function wrapper(arg0, arg1, arg2) {
     case 1:
       result = []
       redBlueIntersect(arg0, arg0, function(i,j) {
-        if(i !== j) {
+        if(i < j) {
           result.push([i, j])
         }
       }, true)
@@ -194,7 +194,7 @@ function wrapper(arg0, arg1, arg2) {
       if(typeof arg1 === 'function') {
         var visit = arg1
         return redBlueIntersect(arg0, arg0, function(i,j) {
-          if(i !== j) {
+          if(i<j) {
             return visit(i,j)
           }
         }, true)

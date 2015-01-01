@@ -61,16 +61,12 @@ function verifyFull(tape, boxes, str) {
   if(expectedBoxes.join(':') === actualBoxes.join(':')) {
     tape.pass(str)
   } else {
-
-    console.log(boxes)
-
+    tape.fail(str)
     for(var i=0; i<actualBoxes.length; ++i) {
       console.log(i, actualBoxes[i], expectedBoxes[i])
     }
-
     console.log(util.inspect(
       diff(actualBoxes, expectedBoxes)))
-    tape.fail(str)
   }
 }
 

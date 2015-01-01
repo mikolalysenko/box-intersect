@@ -195,10 +195,10 @@ tape('boxIntersectIter', function(t) {
     var lifted = liftBoxes(boxes)
     verify(lifted, lifted)
   }
+  /*
 
-  verify(genBoxes.diamonds(1000, 2), genBoxes.diamonds(1000, 2))
+  verify(genBoxes.diamonds(1000, 3), genBoxes.diamonds(1000, 3))
 
-/*
   verify(
     genBoxes.random(200, 2), 
     genBoxes.random(50, 2))
@@ -327,10 +327,10 @@ tape('boxIntersectIter', function(t) {
   verify(
     genBoxes.degenerate(2),
     genBoxes.degenerate(2))
+  */
 
   var clippedBoxes = genBoxes.degenerate(3)
   verify(clippedBoxes, clippedBoxes)
-  */
-
+  
   t.end()
 })

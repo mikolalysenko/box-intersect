@@ -15,7 +15,7 @@ function asymDiff(src, dst) {
   var diff = []
   for(var i=0; i<dst.length; ++i) {
     if(!dict[dst[i]]) {
-      diff.push(dist[i])
+      diff.push(dst[i])
     }
   }
   return diff

@@ -6,6 +6,13 @@ var iota = require('iota-array')
 var guard = require('guarded-array')
 var genBoxes = require('./util/random-boxes')
 var median = require('../lib/boxnd').median
+var shuffle = require('array-shuffle')
+
+function stripAxis(array, axis) {
+  return array.map(function(box) {
+    return box[axis]
+  })
+}
 
 function slowMedian(data, lo, hi) {
   var sorted = data.slice()
@@ -63,7 +70,7 @@ tape('findMedian', function(t) {
           guard(indices, lo, hi))
 
         t.equals(computedIndex, expectedIndex, 'median ok')
-        
+
         console.log(flatBoxes.filter(function(v,i) {
           return (i%(2*d))===axis
         }))
@@ -95,7 +102,16 @@ tape('findMedian', function(t) {
     }
   }
 
-  verify([0,1,2,3,4,5,6,6,6,6,6,6,6,6,7,8,9])
+  function deepVerify(data, lo, hi) {
+    verify(data, lo, hi)
+    for(var i=0; i<10; ++i) {
+      verify(shuffle(data), lo, hi)
+    }
+  }
+
+  deepVerify(stripAxis(genBoxes.diamonds(1000, 3), 0))
+
+  deepVerify([0,1,2,3,4,5,6,6,6,6,6,6,6,6,7,8,9])
   
   var brutal = dup([10], 0)
   brutal[0] = 1
@@ -117,11 +133,13 @@ tape('findMedian', function(t) {
   verify([5, 4, 3, 2, 1, 0])
   verify([0,1,2,3,4,5])
   verify([1, -1, 0, 1, 1, 2])
-  verify([0, 1, 1, 1, 1, 1, 2])
+  deepVerify([0, 1, 1, 1, 1, 1, 2])
   verify([0,0,0,0,0])
   verify(dup([32], 0))
-  
-  verify([ 
+
+
+
+  deepVerify([ 
     0.9191182393115014,
     0.82473976444453,
     0.5173067646101117,
@@ -138,6 +156,6 @@ tape('findMedian', function(t) {
       return Math.random()
     }))
   }
-  
+
   t.end()
 })
