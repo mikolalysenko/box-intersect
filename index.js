@@ -3,7 +3,7 @@
 module.exports           = wrapper
 module.exports.direct    = redBlueIntersect
 
-var BRUTE_FORCE_CUTOFF   = 2
+var BRUTE_FORCE_CUTOFF   = 64
 
 var pool  = require('typedarray-pool')
 var boxnd = require('./lib/boxnd')

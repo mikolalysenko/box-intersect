@@ -169,11 +169,8 @@ tape('boxIntersectIter', function(t) {
     }
 
     t.equal(actual.join(':'), expected.join(':'), 'expected intersections')
-
-    /*
     verifyBoxes(d, redStart, redEnd, red, redFlat, redIds, 'red')
     verifyBoxes(d, blueStart, blueEnd, blue, blueFlat, blueIds, 'blue')
-    */
   }
 
   function verify(red, blue) {
@@ -195,8 +192,7 @@ tape('boxIntersectIter', function(t) {
     var lifted = liftBoxes(boxes)
     verify(lifted, lifted)
   }
-  /*
-
+  
   verify(genBoxes.diamonds(1000, 3), genBoxes.diamonds(1000, 3))
 
   verify(
@@ -327,8 +323,7 @@ tape('boxIntersectIter', function(t) {
   verify(
     genBoxes.degenerate(2),
     genBoxes.degenerate(2))
-  */
-
+  
   var clippedBoxes = genBoxes.degenerate(3)
   verify(clippedBoxes, clippedBoxes)
   
