@@ -116,12 +116,6 @@ tape('sweep1D', function(t) {
         redStart, redEnd, red, 
         blueStart, blueEnd, blue)
 
-    /*
-    actual.forEach(function(e, i) {
-      console.log(i, e, expected[i])
-    })
-*/
-
     t.equals(actual.join(';'), expected.join(';'))
   }
 

@@ -4,7 +4,7 @@ var tape       = require('tape')
 var guard      = require('guarded-array')
 var iota       = require('iota-array')
 var genBoxes   = require('./util/random-boxes')
-var bruteForcePartial = require('../lib/boxnd').brute
+var bruteForcePartial = require('../lib/brute')
 
 //Signature:
 // bruteForcePartial(
@@ -128,6 +128,6 @@ tape('bruteForcePartial', function(t) {
   verify(2, 0, false, genBoxes.degenerate(2), genBoxes.degenerate(2))
 
   //TODO: test early out
-
+  
   t.end()
 })

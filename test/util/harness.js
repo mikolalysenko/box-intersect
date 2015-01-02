@@ -46,9 +46,11 @@ function bruteForceFullOverlap(boxes) {
 
 function algorithmFullOverlap(boxes) {
   console.log('algorithm...')
-  var result = boxIntersect(boxes).map(function(pair) {
-    return [ Math.min(pair[0], pair[1]), Math.max(pair[0], pair[1]) ]
-  })
+  var result = []
+  function visit(i,j) {
+    result.push([Math.min(i,j), Math.max(i,j)])
+  }
+  boxIntersect(boxes, visit)
   result.sort(compareResult)
   return result
 }
