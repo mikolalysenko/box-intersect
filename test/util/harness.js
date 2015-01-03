@@ -52,7 +52,8 @@ function algorithmFullOverlap(boxes) {
     var hi = Math.max(i,j)
     for(var k=0; k<result.length; ++k) {
       if(result[k][0] === lo && result[k][1] === hi) {
-        throw new Error('bad!')
+        console.log(boxes[lo], boxes[hi])
+        throw new Error('bad!' + [lo,hi])
       }
     }
     if(i === j) {
