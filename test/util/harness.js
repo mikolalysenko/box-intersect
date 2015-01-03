@@ -55,7 +55,9 @@ function algorithmFullOverlap(boxes) {
         throw new Error('bad!')
       }
     }
-
+    if(i === j) {
+      throw new Error("wth")
+    }
     result.push([lo,hi])
   }
   boxIntersect(boxes, visit)
