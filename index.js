@@ -1,7 +1,6 @@
 'use strict'
 
 module.exports           = wrapper
-module.exports.direct    = redBlueIntersect
 
 var BRUTE_FORCE_CUTOFF   = 2
 

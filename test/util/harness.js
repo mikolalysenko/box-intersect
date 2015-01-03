@@ -48,7 +48,15 @@ function algorithmFullOverlap(boxes) {
   console.log('algorithm...')
   var result = []
   function visit(i,j) {
-    result.push([Math.min(i,j), Math.max(i,j)])
+    var lo = Math.min(i,j)
+    var hi = Math.max(i,j)
+    for(var k=0; k<result.length; ++k) {
+      if(result[k][0] === lo && result[k][1] === hi) {
+        throw new Error('bad!')
+      }
+    }
+
+    result.push([lo,hi])
   }
   boxIntersect(boxes, visit)
   result.sort(compareResult)

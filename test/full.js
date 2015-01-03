@@ -35,7 +35,9 @@ tape('full intersect', function(t) {
   harness.full(t, genBoxes.diamonds(10, 2),   '2d diamond n=1000')
   harness.full(t, genBoxes.diamonds(1000, 2), '2d diamond n=1000')
   */
-  harness.full(t, genBoxes.diamonds(1000, 3), '3d diamond n=1000')
+  harness.full(t, genBoxes.diamonds(10, 3), '3d diamond n=1000')
+  
+  //harness.full(t, genBoxes.diamonds(1000, 3), '3d diamond n=1000')
   //harness.full(t, genBoxes.diamonds(1000, 4), '4d diamond n=1000')
   
   t.end()
