@@ -2,9 +2,64 @@
 
 var tape = require('tape')
 var genBoxes = require('./util/random-boxes')
-var harness = require('./util/harness')
+var misc = require('./util/misc')
+var boxIntersect = require('../index')
+
+function bruteForceFullOverlap(boxes) {
+  console.log('brute force...')
+  var d = (boxes[0].length)>>>1
+  var result = []
+  for(var i=0; i<boxes.length; ++i) {
+    for(var j=0; j<i; ++j) {
+      if(misc.boxOverlap(d, boxes[i], boxes[j])) {
+        result.push([j,i])
+      }
+    }
+  }
+  return misc.canonicalize(result)
+}
+
+function algorithmFullOverlap(boxes) {
+  console.log('algorithm...')
+  var result = []
+  function visit(i,j) {
+    var lo = Math.min(i,j)
+    var hi = Math.max(i,j)
+    for(var k=0; k<result.length; ++k) {
+      if(result[k][0] === lo && result[k][1] === hi) {
+        console.log(boxes[lo], boxes[hi])
+        throw new Error('bad!' + [lo,hi])
+      }
+    }
+    if(i === j) {
+      throw new Error("wth")
+    }
+    result.push([lo,hi])
+  }
+  boxIntersect(boxes, visit)
+  return misc.canonializePairs(result)
+}
+
 
 tape('full intersect', function(t) {
+
+  function verify(boxes, str) {
+    var expectedBoxes = bruteForceFullOverlap(boxes)
+    var actualBoxes   = algorithmFullOverlap(boxes)
+
+    if(expectedBoxes.join(':') === actualBoxes.join(':')) {
+      t.pass(str)
+    } else {
+      t.fail(str)
+      for(var i=0; i<actualBoxes.length; ++i) {
+        console.log(i, actualBoxes[i], expectedBoxes[i])
+      }
+    }
+  }
+
+
+
+
 
 /*
   harness.full(t, [
@@ -32,7 +87,7 @@ tape('full intersect', function(t) {
   })
 */
 
-  harness.full(t, genBoxes.degenerate(2))
+  verify(genBoxes.degenerate(2))
   /*
   harness.full(t, genBoxes.degenerate(3))
 

@@ -2,12 +2,43 @@
 
 var tape = require('tape')
 var genBoxes = require('./util/random-boxes')
-var harness = require('./util/harness')
+var misc = require('./util/misc')
+var boxIntersect = require('../index')
+
+function bruteForceBipartiteOverlap(boxes, otherBoxes) {
+  console.log('brute force...')
+  var d = (boxes[0].length)>>>1
+  var result = []
+  for(var i=0; i<boxes.length; ++i) {
+    for(var j=0; j<otherBoxes.length; ++j) {
+      if(misc.boxOverlap(d, boxes[i], otherBoxes[j])) {
+        result.push([i,j])
+      }
+    }
+  }
+  return misc.canonicalize(result)
+}
+
+function algorithmPartialOverlap(boxes, otherBoxes) {
+  console.log('algorithm...')
+  var result = []
+  boxIntersect(boxes, otherBoxes, function(i,j) {
+    result.push([i,j])
+  })
+  return misc.canonicalize(result)
+}
 
 tape('bipartite', function(t) {
 
-  harness.bipartite(t, genBoxes.degenerate(2), genBoxes.degenerate(2))  
-  harness.bipartite(t, genBoxes.degenerate(3), genBoxes.degenerate(3))
+  function verify(boxes, otherBoxes, str) {
+    t.equals(
+      algorithmPartialOverlap(boxes, otherBoxes).join(':'),
+      bruteForceBipartiteOverlap(boxes, otherBoxes).join(':'),
+      str)
+  }
+
+  verify(genBoxes.degenerate(2), genBoxes.degenerate(2))  
+  verify(genBoxes.degenerate(3), genBoxes.degenerate(3))
 
   //Random test cases
   ;[10, 100, 1000].forEach(function(countR) {
@@ -21,7 +52,7 @@ tape('bipartite', function(t) {
           }
           boxes[j] = box
         }
-        harness.bipartite(t, boxes, boxes, d + 'd sym bipartite n=' + countR)
+        verify(boxes, boxes, d + 'd sym bipartite n=' + countR)
 
         ;[10, 100, 1000].forEach(function(countB) {
           var otherBoxes = new Array(countB)
@@ -32,15 +63,14 @@ tape('bipartite', function(t) {
             }
             otherBoxes[j] = box
           }
-          harness.bipartite(t, boxes, otherBoxes, d + 'd bipartite n=' + countR + '/m=' + countB)
+          verify(boxes, otherBoxes, d + 'd bipartite n=' + countR + '/m=' + countB)
         })
       }
     }
   })
 
-  harness.bipartite(t, genBoxes.diamonds(1000, 2), genBoxes.diamonds(800,2))
-  harness.bipartite(t, genBoxes.diamonds(1000, 3), genBoxes.diamonds(1000,3))
-  
+  verify(genBoxes.diamonds(1000, 2), genBoxes.diamonds(800,2))
+  verify(genBoxes.diamonds(1000, 3), genBoxes.diamonds(1000,3))
   
   t.end()
 })

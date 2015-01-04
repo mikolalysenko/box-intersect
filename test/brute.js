@@ -5,20 +5,13 @@ var guard      = require('guarded-array')
 var iota       = require('iota-array')
 var genBoxes   = require('./util/random-boxes')
 var bruteForcePartial = require('../lib/brute')
+var misc = require('./util/misc')
 
 //Signature:
 // bruteForcePartial(
 //  d, axis, visit, flip,
 //  redStart,  redEnd,  red,  redIndex,
 //  blueStart, blueEnd, blue, blueIndex)
-
-function comparePair(a,b) {
-  var d = a[0] - b[0]
-  if(d) {
-    return d
-  }
-  return a[1] - b[1]
-}
 
 function partialOverlap(d, axis, a, b) {
   for(var i=axis; i<d; ++i) {
@@ -87,10 +80,10 @@ tape('bruteForcePartial', function(t) {
         }
       }
 
-      list.sort(comparePair)
-      elist.sort(comparePair)
+      var list = misc.canonicalize(list)
+      var elist = misc.canonicalize(elist)
 
-      t.same(list, elist)
+      t.equals(list.join(':'), elist.join(':'))
     }
 
     //try a couple of ranges

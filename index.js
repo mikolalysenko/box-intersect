@@ -4,7 +4,7 @@ module.exports = boxIntersectWrapper
 
 var pool = require('typedarray-pool')
 var sweep = require('./lib/sweep')
-var boxIntersectIter = require('./lib/boxnd')
+var boxIntersectIter = require('./lib/intersect')
 
 //Unpack boxes into a flat typed array, remove empty boxes
 function convertBoxes(boxes, n, d, data, ids) {
@@ -31,6 +31,7 @@ i_loop:
   return count
 }
 
+//Perform type conversions, check bounds
 function boxIntersect(red, blue, visit, full) {
   var n = red.length
   var m = blue.length
@@ -56,8 +57,10 @@ function boxIntersect(red, blue, visit, full) {
   if(n > 0) {
     if(d === 1 && full) {
       //Special case: 1d complete
-      sweepInit(n)
-      retval = sweep.sweepComplete(d, visit, 
+      sweep.init(n)
+      retval = sweep.sweepComplete(
+        d, visit, 
+        0, n, redList, redIds,
         0, n, redList, redIds)
     } else {
 

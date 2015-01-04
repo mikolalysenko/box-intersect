@@ -3,11 +3,10 @@
 var tape = require('tape')
 var guard = require('guarded-array')
 var iota = require('iota-array')
+var sweep = require('../lib/sweep')
+var boxIntersectIter = require('../lib/intersect')
 var genBoxes = require('./util/random-boxes')
-var boxnd = require('../lib/boxnd')
-var boxIntersectIter = boxnd.intersectIter
-var sqInit = boxnd.sweepInit
-var iterInit = boxnd.iterInit
+var misc = require('./util/misc')
 
 // Signature:
 //
@@ -17,45 +16,9 @@ var iterInit = boxnd.iterInit
 //  blueSize, blue, blueIndex)
 //
 
-function canonicalizeIntersect(reported) {
-  reported = reported.slice()
-  reported.sort(function(a, b) {
-    var d = a[0] - b[0]
-    if(d) {
-      return d
-    }
-    return a[1] - b[1]
-  })
-  return reported
-}
-
-function testOverlap(d, flip, r, b) {
-  var axis = 0
-  var r0 = r[axis]
-  var r1 = r[axis+d]
-  var b0 = b[axis]
-  var b1 = b[axis+d]
-  if(b0 < r0 || r1 < b0) {
-    return false
-  }
-  if(b[axis] === r[axis] && flip) {
-    return false
-  }
-  for(var k=axis+1; k<d; ++k) {
-    var r0 = r[k]
-    var r1 = r[k+d]
-    var b0 = b[k]
-    var b1 = b[k+d]
-    if(r1 < b0 || b1 < r0) {
-      return false
-    }
-  }
-  return true
-}
-
 
 function bruteForceIntersect(
-  d, flip,
+  d, 
   redStart, redEnd, red,
   blueStart, blueEnd, blue) {
   var axis = 0
@@ -67,18 +30,14 @@ j_loop:
     for(var j=blueStart; j<blueEnd; ++j) {
       var b = blue[j]
 
-      if(!testOverlap(d, flip, r, b)) {
+      if(!misc.boxOverlap(d, r, b)) {
         continue
       }
 
-      if(flip) {
-        result.push([j,i])
-      } else {
-        result.push([i,j])
-      }
+      result.push([i,j])
     }
   }
-  return canonicalizeIntersect(result)
+  return misc.canonicalize(result)
 }
 
 
@@ -121,52 +80,32 @@ tape('boxIntersectIter', function(t) {
     var blueStart = 0
     var blueEnd = blue.length
 
-    sqInit(red.length+blue.length)
-    iterInit(d, red.length+blue.length)
-
+    sweep.init(red.length+blue.length)
+    
     var actual = []
     function visit(i,j) {
       //console.log('\tvisit', i, j, red[i], blue[j])
-
-      if(flip) {
-        if(red[i][0] === blue[j][0]) {
-          throw new Error('visiting boxes with common end point')
-        }
-        if(!testOverlap(d, flip, blue[j], red[i])) {
-          throw new Error('invalid overlap reported')
-        }
-      } else {
-        if(!testOverlap(d, flip, red[i], blue[j])) {
-          throw new Error('invalid overlap reported')
-        }
+      if(!misc.boxOverlap(d, red[i], blue[j])) {
+        throw new Error('invalid overlap reported')
       }
 
       actual.push([i,j])
     }
 
     boxIntersectIter(
-      d, visit, flip,
+      d, visit, false,
       red.length,
       guard(redFlat, 2*d*redStart, 2*d*redEnd),
       guard(redIds, redStart, redEnd),
       blue.length,
       guard(blueFlat, 2*d*blueStart, 2*d*blueEnd),
       guard(blueIds, blueStart, blueEnd))
-    actual = canonicalizeIntersect(actual)
+    actual = misc.canonicalize(actual)
 
-    var expected
-
-    if(flip) {
-      expected = bruteForceIntersect(
-        d, true,
-        blueStart, blueEnd, blue,
-        redStart, redEnd, red)
-    } else {
-      expected = bruteForceIntersect(
-        d, false,
-        redStart, redEnd, red,
-        blueStart, blueEnd, blue)
-    }
+    var expected = bruteForceIntersect(
+      d, 
+      redStart, redEnd, red,
+      blueStart, blueEnd, blue)
 
     t.equal(actual.join(':'), expected.join(':'), 'expected intersections')
     verifyBoxes(d, redStart, redEnd, red, redFlat, redIds, 'red')
@@ -175,9 +114,7 @@ tape('boxIntersectIter', function(t) {
 
   function verify(red, blue) {
     var d = (red[0].length>>>1)
-    for(var flip=0; flip<2; ++flip) {
-      verifyIntersect(d, flip, red, blue)
-    }
+    verifyIntersect(d, 0, red, blue)
   }
 
   function test1D(red, blue) {
