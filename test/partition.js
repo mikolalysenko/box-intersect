@@ -14,8 +14,7 @@ var genPartition = require('../lib/partition')
 //  pred, a, b)
 //
 
-var partitionCode = genPartition('partitionPred', 'pred(lo,hi,a0,a1)', ['pred', 'a0', 'a1'])
-var partition = (new Function('return ' + partitionCode))()
+var partition = genPartition('pred(lo,hi,a0,a1)', ['pred', 'a0', 'a1'])
 
 function intervalContainsInterval(a0, a1, lo, hi) {
   return a0 <= lo && hi <= a1

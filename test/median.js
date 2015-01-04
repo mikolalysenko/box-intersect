@@ -5,7 +5,7 @@ var dup = require('dup')
 var iota = require('iota-array')
 var guard = require('guarded-array')
 var genBoxes = require('./util/random-boxes')
-var median = require('../lib/boxnd').median
+var median = require('../lib/median')
 var shuffle = require('array-shuffle')
 
 function stripAxis(array, axis) {

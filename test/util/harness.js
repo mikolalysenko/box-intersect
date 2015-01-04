@@ -101,7 +101,10 @@ function bruteForceBipartiteOverlap(boxes, otherBoxes) {
 
 function algorithmPartialOverlap(boxes, otherBoxes) {
   console.log('algorithm...')
-  var result = boxIntersect(boxes, otherBoxes)
+  var result = []
+  boxIntersect(boxes, otherBoxes, function(i,j) {
+    result.push([i,j])
+  })
   result.sort(compareResult)
   return result
 }

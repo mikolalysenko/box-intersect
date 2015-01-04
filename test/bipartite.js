@@ -6,6 +6,9 @@ var harness = require('./util/harness')
 
 tape('bipartite', function(t) {
 
+  harness.bipartite(t, genBoxes.degenerate(2), genBoxes.degenerate(2))  
+  harness.bipartite(t, genBoxes.degenerate(3), genBoxes.degenerate(3))
+
   //Random test cases
   ;[10, 100, 1000].forEach(function(countR) {
     for(var d=1; d<=4; ++d) {
@@ -36,6 +39,8 @@ tape('bipartite', function(t) {
   })
 
   harness.bipartite(t, genBoxes.diamonds(1000, 2), genBoxes.diamonds(800,2))
-
+  harness.bipartite(t, genBoxes.diamonds(1000, 3), genBoxes.diamonds(1000,3))
+  
+  
   t.end()
 })
