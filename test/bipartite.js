@@ -71,6 +71,8 @@ tape('bipartite', function(t) {
 
   verify(genBoxes.diamonds(1000, 2), genBoxes.diamonds(800,2))
   verify(genBoxes.diamonds(1000, 3), genBoxes.diamonds(1000,3))
+  verify(genBoxes.diamonds(1000, 4), genBoxes.diamonds(1000,4))
+  verify(genBoxes.diamonds(1000, 5), genBoxes.diamonds(1000,5))
   
   t.end()
 })

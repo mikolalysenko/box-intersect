@@ -15,8 +15,6 @@ var misc = require('./util/misc')
 //  redSize, red, redIndex,
 //  blueSize, blue, blueIndex)
 //
-
-
 function bruteForceIntersect(
   d, 
   redStart, redEnd, red,

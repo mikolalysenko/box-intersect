@@ -25,25 +25,31 @@ function algorithmFullOverlap(boxes) {
   function visit(i,j) {
     var lo = Math.min(i,j)
     var hi = Math.max(i,j)
+    /*
     for(var k=0; k<result.length; ++k) {
       if(result[k][0] === lo && result[k][1] === hi) {
         console.log(boxes[lo], boxes[hi])
         throw new Error('bad!' + [lo,hi])
       }
     }
+    */
     if(i === j) {
-      throw new Error("wth")
+      throw new Error("repeated index")
     }
     result.push([lo,hi])
   }
   boxIntersect(boxes, visit)
-  return misc.canonializePairs(result)
+  return misc.canonicalize(result)
 }
 
 
 tape('full intersect', function(t) {
 
+
   function verify(boxes, str) {
+    console.log(boxes[28], boxes[34])
+
+
     var expectedBoxes = bruteForceFullOverlap(boxes)
     var actualBoxes   = algorithmFullOverlap(boxes)
 
@@ -57,12 +63,7 @@ tape('full intersect', function(t) {
     }
   }
 
-
-
-
-
-/*
-  harness.full(t, [
+  verify([
     [1,2],
     [2,3],
     [1,3]
@@ -81,22 +82,19 @@ tape('full intersect', function(t) {
           boxes[j] = box
         }
         
-        harness.full(t, boxes, d + 'd full n=' + count)
+        verify(boxes, d + 'd full n=' + count)
       }
     }
   })
-*/
 
   verify(genBoxes.degenerate(2))
-  /*
-  harness.full(t, genBoxes.degenerate(3))
+  verify(genBoxes.degenerate(3))
 
-  harness.full(t, genBoxes.random(10,2))
-  harness.full(t, genBoxes.diamonds(10, 2),   '2d diamond n=1000')
-  harness.full(t, genBoxes.diamonds(1000, 2), '2d diamond n=1000')
-  harness.full(t, genBoxes.diamonds(1000, 3), '3d diamond n=1000')
-  harness.full(t, genBoxes.diamonds(1000, 4), '4d diamond n=1000')
-  */
+  verify(genBoxes.random(10,2))
+  verify(genBoxes.diamonds(10, 2),   '2d diamond n=1000')
+  verify(genBoxes.diamonds(1000, 2), '2d diamond n=1000')
+  verify(genBoxes.diamonds(1000, 3), '3d diamond n=1000')
+  verify(genBoxes.diamonds(1000, 4), '4d diamond n=1000')
   
   t.end()
 })
