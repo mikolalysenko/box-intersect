@@ -43,7 +43,7 @@ tape('scan', function(t) {
       }
 
       sweep.init(redEnd-redStart + blueEnd-blueStart)
-      sweep.scan(d, axis, visit, flip, false,
+      sweep.scanBipartite(d, axis, visit, flip,
         redStart, 
         redEnd, 
         guard(red, 2*d*redStart, 2*d*redEnd), 
