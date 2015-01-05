@@ -47,9 +47,6 @@ tape('full intersect', function(t) {
 
 
   function verify(boxes, str) {
-    console.log(boxes[28], boxes[34])
-
-
     var expectedBoxes = bruteForceFullOverlap(boxes)
     var actualBoxes   = algorithmFullOverlap(boxes)
 
