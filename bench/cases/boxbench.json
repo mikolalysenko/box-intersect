@@ -1,7 +1,8 @@
 {
   "name": "box intersect param sweep",
   "algorithms": [
-    "box-intersect"
+    "box-intersect",
+    "rbush-incremental"
   ],
   "distribution": {
     "d": 2,
