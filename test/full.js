@@ -54,7 +54,7 @@ tape('full intersect', function(t) {
       t.pass(str)
     } else {
       t.fail(str)
-      for(var i=0; i<actualBoxes.length; ++i) {
+      for(var i=0; i<Math.max(actualBoxes.length, expectedBoxes.length); ++i) {
         console.log(i, actualBoxes[i], expectedBoxes[i])
       }
     }

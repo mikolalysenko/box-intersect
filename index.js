@@ -14,9 +14,9 @@ i_loop:
   for(var i=0; i<n; ++i) {
     var b = boxes[i]
 
-    //Make sure b is not empty
+    //Make sure b is not empty and not NaN
     for(var j=0; j<d; ++j) {
-      if(b[d+j] < b[j]) {
+      if(!(b[j] <= b[j+d])) {
         continue i_loop
       }
     }
