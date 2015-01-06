@@ -5,7 +5,6 @@ module.exports = runBenchmark
 var distributions = {
   uniform:   require('./generators/uniform'),
   diamond:   require('./generators/diamond'),
-
 }
 
 var codes = {
@@ -74,7 +73,7 @@ function runBenchmark(desc) {
 
       result.data[alg].push((tEnd - tStart) / numIters)
 
-      console.log('num interactions=', counter, 't=', tEnd-tStart)
+      console.log('num interactions=', counter, 'tAvg=', (tEnd-tStart)/numIters + 'ms')
     })
   })
 
