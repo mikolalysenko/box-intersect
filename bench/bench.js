@@ -5,20 +5,19 @@ module.exports = runBenchmark
 var distributions = {
   uniform:   require('./generators/uniform'),
   diamond:   require('./generators/diamond'),
+  balanced:  require('./generators/balanced')
 }
 
 var codes = {
   'brute-force': require('./algorithms/brute-force'),
   'box-intersect': require('./algorithms/box-intersect'),
   'rbush-incremental': require('./algorithms/rbush/incremental'),
-  'rbush-bulk': require('./algorithms/rbush/bulk')
-  /*
+  'rbush-bulk': require('./algorithms/rbush/bulk'),
   'box2d': require('./algorithms/box2d/broadphase'),
   'p2-grid': require('./algorithms/p2/grid'),
   'p2-sweep': require('./algorithms/p2/sweep'),
   'oimo-brute-force': require('./algorithms/oimo/brute-force'),
   'oimo-bvh': require('./algorithms/oimo/bvh')
-  */
 }
 
 function generateBoxes(options) {

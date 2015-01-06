@@ -6,27 +6,28 @@ var pool = require('typedarray-pool')
 var sweep = require('./lib/sweep')
 var boxIntersectIter = require('./lib/intersect')
 
+function boxEmpty(d, box) {
+  for(var j=0; j<d; ++j) {
+    if(!(box[j] <= box[j+d])) {
+      return true
+    }
+  }
+  return false
+}
+
 //Unpack boxes into a flat typed array, remove empty boxes
-function convertBoxes(boxes, n, d, data, ids) {
+function convertBoxes(boxes, d, data, ids) {
   var ptr = 0
   var count = 0
-i_loop:
-  for(var i=0; i<n; ++i) {
+  for(var i=0, n=boxes.length; i<n; ++i) {
     var b = boxes[i]
-
-    //Make sure b is not empty and not NaN
-    for(var j=0; j<d; ++j) {
-      if(!(b[j] <= b[j+d])) {
-        continue i_loop
-      }
+    if(boxEmpty(d, b)) {
+      continue
     }
-
-    //If not empty, then append to list
     for(var j=0; j<2*d; ++j) {
       data[ptr++] = b[j]
     }
-    ids[count] = i
-    count += 1
+    ids[count++] = i
   }
   return count
 }
@@ -52,7 +53,7 @@ function boxIntersect(red, blue, visit, full) {
   //Convert red boxes
   var redList  = pool.mallocDouble(2*d*n)
   var redIds   = pool.mallocInt32(n)
-  n = convertBoxes(red, n, d, redList, redIds)
+  n = convertBoxes(red, d, redList, redIds)
 
   if(n > 0) {
     if(d === 1 && full) {
@@ -67,7 +68,7 @@ function boxIntersect(red, blue, visit, full) {
       //Convert blue boxes
       var blueList = pool.mallocDouble(2*d*m)
       var blueIds  = pool.mallocInt32(m)
-      m = convertBoxes(blue, m, d, blueList, blueIds)
+      m = convertBoxes(blue, d, blueList, blueIds)
 
       if(m > 0) {
         sweep.init(n+m)

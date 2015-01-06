@@ -1,11 +1,10 @@
 {
-  "name": "2D Uniform Small Boxes",
+  "name": "2D Uniform Medium Boxes",
   "algorithms": [
     "brute-force",
     "box-intersect",
     "rbush-incremental",
     "rbush-bulk",
-    "box2d",
     "p2-grid",
     "p2-sweep"
   ],
@@ -16,8 +15,8 @@
     "hi": [0.001,0.001]
   },
   "sweep": {
-    "n": [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000]
+    "n": [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000]
   },
-  "numIters": 200,
+  "numIters": 50,
   "plot": true
 }

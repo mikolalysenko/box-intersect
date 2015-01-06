@@ -1,15 +1,14 @@
 {
   "name": "box intersect param sweep",
   "algorithms": [
-    "box-intersect",
-    "rbush-incremental"
+    "box-intersect"
   ],
   "distribution": {
     "d": 2,
     "type": "diamond"
   },
   "sweep": {
-    "n": [10, 1000, 10000, 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000]
+    "n": [100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000]
   },
   "numIters": 5
 }

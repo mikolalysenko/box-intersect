@@ -1,0 +1,20 @@
+{
+  "name": "2D Uniform Big",
+  "algorithms": [
+    "box-intersect",
+    "rbush-incremental",
+    "rbush-bulk",
+    "p2-grid"
+  ],
+  "distribution": {
+    "d": 2,
+    "type": "uniform",
+    "lo": [0.00001,0.00001],
+    "hi": [0.0001,0.0001]
+  },
+  "sweep": {
+    "n": [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 95000, 100000]
+  },
+  "numIters": 50,
+  "plot": true
+}

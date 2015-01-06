@@ -1,19 +1,16 @@
 {
-  "name": "2D Uniform Small Boxes",
+  "name": "Uniform 3D",
   "algorithms": [
     "brute-force",
     "box-intersect",
-    "rbush-incremental",
-    "rbush-bulk",
-    "box2d",
-    "p2-grid",
-    "p2-sweep"
+    "oimo-brute-force",
+    "oimo-bvh"
   ],
   "distribution": {
-    "d": 2,
+    "d": 3,
     "type": "uniform",
-    "lo": [0.0001,0.0001],
-    "hi": [0.001,0.001]
+    "lo": [0.01,0.01,0.01],
+    "hi": [0.02,0.02,0.02]
   },
   "sweep": {
     "n": [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000]

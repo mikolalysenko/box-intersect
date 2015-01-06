@@ -16,5 +16,7 @@ if(process.argv[2]) {
 
 for(var i=0; i<cases.length; ++i) {
   var result = runBench(cases[i])
-  console.log('plot:', makePlot(result))
+  if(cases[i].plot) {
+    makePlot(result)
+  }
 }

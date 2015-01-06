@@ -18,3 +18,4 @@ node_modules/*
 *.cfg
 bench/irhydra.html
 bench/test.html
+bench/plotly.json
