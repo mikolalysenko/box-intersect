@@ -7,7 +7,7 @@ exports.prepare = function(boxes) { return boxes.map(function(b,i) {
 }) }
 
 exports.run = function(boxes) {
-  var tree = rbush(9)
+  var tree = rbush(16)  //16 seems to give best results
   var count = 0
   var n = boxes.length
   for(var i=0; i<n; ++i) {

@@ -5,11 +5,14 @@ module.exports = runBenchmark
 var distributions = {
   uniform:   require('./generators/uniform'),
   diamond:   require('./generators/diamond'),
-  balanced:  require('./generators/balanced')
+  balanced:  require('./generators/balanced'),
+  aspect:    require('./generators/aspect'),
+  grid:      require('./generators/grid')
 }
 
 var codes = {
   'brute-force': require('./algorithms/brute-force'),
+  'brute-force-length': require('./algorithms/brute-force-length'),
   'box-intersect': require('./algorithms/box-intersect'),
   'rbush-incremental': require('./algorithms/rbush/incremental'),
   'rbush-bulk': require('./algorithms/rbush/bulk'),

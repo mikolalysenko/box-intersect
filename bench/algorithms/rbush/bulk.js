@@ -7,7 +7,7 @@ exports.prepare = function(boxes) { return boxes.map(function(b,i) {
 }) }
 
 exports.run = function(boxes) {
-  var tree = rbush(9).load(boxes)
+  var tree = rbush(9).load(boxes) //9 seems to be faster on this example
   var count = 0
   var n = boxes.length
   for(var i=0; i<n; ++i) {

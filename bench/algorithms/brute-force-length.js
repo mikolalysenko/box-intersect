@@ -1,10 +1,16 @@
 'use strict'
 
-exports.name = 'Brute Force'
+exports.name = 'Brute Force - Length Encoding'
 
 exports.prepare = function(boxes) {
   return boxes.map(function(b) {
-    return b.slice()
+    var r = new Array(b.length)
+    var d = b.length>>>1
+    for(var i=0; i<d; ++i) {
+      r[i] = b[i]
+      r[i+d] = b[i+d] - b[i]
+    }
+    return r
   })
 }
 
@@ -22,7 +28,8 @@ j_loop:
         var a1 = a[i+d]
         var b0 = b[i]
         var b1 = b[i+d]
-        if(a1 < b0 || b1 < a0) {
+
+        if(2 * Math.abs(a0 - b0) >= (a1 + b1)) {
           continue j_loop
         }
       }
