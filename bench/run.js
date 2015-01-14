@@ -5,7 +5,8 @@ var makePlot = require('./plot')
 var cases = [
   //require('./cases/uniform2d.json')
   //require('./cases/boxbench.json')
-  require('./cases/length-vs-bounds.json')
+  //require('./cases/length-vs-bounds.json')
+  require('./cases/grid2d.json')
 ]
 
 if(process.argv[2]) {

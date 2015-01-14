@@ -7,7 +7,8 @@ var distributions = {
   diamond:   require('./generators/diamond'),
   balanced:  require('./generators/balanced'),
   aspect:    require('./generators/aspect'),
-  grid:      require('./generators/grid')
+  grid:      require('./generators/grid'),
+  cluster:   require('./generators/cluster')
 }
 
 var codes = {

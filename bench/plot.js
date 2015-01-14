@@ -14,6 +14,11 @@ var plotly = require('plotly')(PLOTLY_CONFIG.username, PLOTLY_CONFIG.key)
 
 function plotBenchmark(result) {
 
+  if(typeof document !== 'undefined') {
+    console.log(result)
+    return
+  }
+
   var series = Object.keys(result.data)
   var traces = series.map(function(name) {
     return {

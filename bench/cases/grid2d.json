@@ -1,0 +1,14 @@
+{
+  "name": "2D grid",
+  "algorithms": [
+    "box-intersect"
+  ],
+  "distribution": {
+    "d": 2,
+    "type": "grid"
+  },
+  "sweep": {
+    "n": [100000]
+  },
+  "numIters": 50
+}
