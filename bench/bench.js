@@ -8,12 +8,14 @@ var distributions = {
   balanced:  require('./generators/balanced'),
   aspect:    require('./generators/aspect'),
   grid:      require('./generators/grid'),
-  cluster:   require('./generators/cluster')
+  cluster:   require('./generators/cluster'),
+  sphere:    require('./generators/sphere'),
+  bunny:     require('./generators/bunny')
 }
 
 var codes = {
-  'brute-force': require('./algorithms/brute-force'),
-  'brute-force-length': require('./algorithms/brute-force-length'),
+  'brute-force': require('./algorithms/brute-force-length'),
+  'brute-force-robust': require('./algorithms/brute-force'),
   'box-intersect': require('./algorithms/box-intersect'),
   'rbush-incremental': require('./algorithms/rbush/incremental'),
   'rbush-bulk': require('./algorithms/rbush/bulk'),
@@ -21,7 +23,13 @@ var codes = {
   'p2-grid': require('./algorithms/p2/grid'),
   'p2-sweep': require('./algorithms/p2/sweep'),
   'oimo-brute-force': require('./algorithms/oimo/brute-force'),
-  'oimo-bvh': require('./algorithms/oimo/bvh')
+  'oimo-bvh': require('./algorithms/oimo/bvh'),
+  'simple-quadtree': require('./algorithms/simple-quadtree/complete'),
+  'lazykdtree': require('./algorithms/lazykdtree/complete'),
+  'rtree': require('./algorithms/rtree/complete'),
+  'jsts-quadtree': require('./algorithms/jsts/quadtree'),
+  'jsts-strtree': require('./algorithms/jsts/strtree'),
+  'jsts-sirtree': require('./algorithms/jsts/sirtree')
 }
 
 function generateBoxes(options) {
@@ -41,6 +49,8 @@ function runBenchmark(desc) {
   var sweepParam   = Object.keys(sweep)[0]
   var sweepValues  = sweep[sweepParam]
   var numIters     = desc.numIters || 5
+
+  console.log('generator:', desc.distribution.type)
 
   var result = {
     name: desc.name,

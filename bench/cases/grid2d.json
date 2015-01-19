@@ -1,14 +1,15 @@
 {
   "name": "2D grid",
   "algorithms": [
-    "box-intersect"
+    "box-intersect",
+    "oimo-bvh"
   ],
   "distribution": {
-    "d": 2,
-    "type": "grid"
+    "d": 3,
+    "type": "bunny"
   },
   "sweep": {
     "n": [100000]
   },
-  "numIters": 50
+  "numIters": 100
 }

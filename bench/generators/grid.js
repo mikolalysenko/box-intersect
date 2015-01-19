@@ -30,14 +30,15 @@ module.exports = function(n, d) {
   var G = Math.ceil(Math.pow(n, 1/d))|0
   var boxes = gridRec(G, d)
 
-  for(var k=0; k<1; ++k)
-  for(var i=0; i<G; ++i) {
+  var k = 0
+
+  for(var i=-1; i<G; ++i) {
     var p = new Array(2*d)
     for(var j=0; j<d; ++j) {
-      p[j] = Math.random()
+      p[j]   = Math.random()
       p[j+d] = G + Math.random()
     }
-    p[k] = i+0.25 + 0.5*Math.random()
+    p[k]   = i+0.25 + 0.5*Math.random()
     p[k+d] = p[k] + 0.25 * Math.random()
     boxes.push(p)
   }

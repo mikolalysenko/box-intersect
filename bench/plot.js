@@ -50,7 +50,7 @@ function plotBenchmark(result) {
       console.error("error!", err)
       console.log("data:", result)
     } else {
-      console.log(msg.url)
+      console.log(result.name+':', msg.url)
     }
   })
 }
