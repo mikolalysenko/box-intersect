@@ -14,9 +14,9 @@ var distributions = {
 }
 
 var codes = {
-  'brute-force': require('./algorithms/brute-force-length'),
-  'brute-force-robust': require('./algorithms/brute-force'),
-  'box-intersect': require('./algorithms/box-intersect'),
+  'brute-force': require('./algorithms/brute-force/complete-fast'),
+  'brute-force-robust': require('./algorithms/brute-force/complete-robust'),
+  'box-intersect': require('./algorithms/box-intersect/complete'),
   'rbush-incremental': require('./algorithms/rbush/incremental'),
   'rbush-bulk': require('./algorithms/rbush/bulk'),
   'box2d': require('./algorithms/box2d/broadphase'),
