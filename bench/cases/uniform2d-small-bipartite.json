@@ -1,0 +1,22 @@
+{
+  "name": "2D Uniform Small Boxes - Bipartite",
+  "algorithms": [
+    "brute-force",
+    "box-intersect",
+    "rbush"
+  ],
+  "distribution": [
+    {
+      "d": 2,
+      "type": "uniform"
+    },
+    {
+      "d": 2,
+      "type": "uniform"
+    }],
+  "parameters": [ ["0.n", "1.n"] ],
+  "cases": [10],
+  "ranges": [ [[50, 1000], [50, 1000]] ],
+  "numIters": 250,
+  "plot": true
+}

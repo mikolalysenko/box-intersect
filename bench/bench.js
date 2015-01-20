@@ -4,16 +4,12 @@ module.exports = runBenchmark
 
 var distributions = {
   uniform:   require('./generators/uniform'),
-  diamond:   require('./generators/diamond'),
-  balanced:  require('./generators/balanced'),
-  aspect:    require('./generators/aspect'),
-  grid:      require('./generators/grid'),
-  cluster:   require('./generators/cluster'),
+  skewed:    require('./generators/skewed'),
   sphere:    require('./generators/sphere'),
   bunny:     require('./generators/bunny')
 }
 
-var codes = {
+var completeAlgs = {
   'brute-force': require('./algorithms/brute-force/complete-fast'),
   'brute-force-robust': require('./algorithms/brute-force/complete-robust'),
   'box-intersect': require('./algorithms/box-intersect/complete'),
@@ -28,16 +24,27 @@ var codes = {
   'lazykdtree': require('./algorithms/lazykdtree/complete'),
   'rtree': require('./algorithms/rtree/complete'),
   'jsts-quadtree': require('./algorithms/jsts/quadtree'),
-  'jsts-strtree': require('./algorithms/jsts/strtree'),
-  'jsts-sirtree': require('./algorithms/jsts/sirtree')
+  'jsts-strtree': require('./algorithms/jsts/strtree')
 }
 
+var bipartiteAlgs = {
+  'brute-force': require('./algorithms/brute-force/bipartite-fast'),
+  'box-intersect': require('./algorithms/box-intersect/bipartite'),
+  'rbush': require('./algorithms/rbush/bipartite')
+  //TODO: jsts, lazykdtree, simple-quadtree, rtree
+}
+
+var prettyNames = {
+  'n':   'Boxes',
+  '0.n': 'Red boxes',
+  '1.n': 'Blue boxes'
+}
+
+
 function generateBoxes(options) {
-  var n = options.n
-  var d = options.d
   var dist = distributions[options.type]
   if(dist) {
-    return dist(n, d, options)
+    return dist(options)
   }
   throw new Error('invalid distribution type: ' + options.type)
 }
@@ -45,50 +52,164 @@ function generateBoxes(options) {
 function runBenchmark(desc) {
   var algorithms   = desc.algorithms
   var distribution = desc.distribution
-  var sweep        = desc.sweep
-  var sweepParam   = Object.keys(sweep)[0]
-  var sweepValues  = sweep[sweepParam]
+  var sweepParam   = desc.parameters
+  var sweepValues  = desc.ranges
+  var sweepCases   = desc.cases
   var numIters     = desc.numIters || 5
+  var bipartite    = Array.isArray(distribution) && distribution.length === 2
 
-  console.log('generator:', desc.distribution.type)
-
-  var result = {
-    name: desc.name,
-    xaxis: sweepValues,
-    xvariable: sweepParam,
-    data: {}
-  }
-  for(var i=0; i<algorithms.length; ++i) {
-    result.data[algorithms[i]] = []
+  if(bipartite) {
+    console.log('generators:', distribution[0].type, distribution[1].type)
+  } else {
+    console.log('generator:', desc.distribution.type)
   }
 
-  sweepValues.forEach(function(v, i) {
-    distribution[sweepParam] = v
-    var boxes = generateBoxes(distribution)
+  function parameterSweep() {
+    var result = {
+      names: sweepParam[0].map(function(name) {
+        if(name in prettyNames) {
+          return prettyNames[name]
+        }
+        return name
+      }),
+      axis: [],
+      data: {}
+    }
+    for(var i=0; i<algorithms.length; ++i) {
+      result.data[algorithms[i]] = []
+    }
 
-    console.log('case:', i, sweepParam + '=' + v)
-    algorithms.forEach(function(alg) {
-      console.log('testing', alg)
+    for(var i=0; i<=sweepCases[0]; ++i) {
+      var xparameter = []
+      for(var j=0; j<sweepParam[0].length; ++j) {
+        var p = sweepParam[0][j].split('.')
+        var x = distribution
+        while(p.length > 1) {
+          x = x[p.shift()]
+        }
+        var v = sweepValues[0][j]
+        var vv = v[0] + (v[1] - v[0]) / sweepCases * i
+        x[p[0]] = vv
+        xparameter.push(vv)
+      }
+      result.axis.push(xparameter)
 
-      var algorithm = codes[alg]
-      var convertedBoxes = algorithm.prepare(boxes)
+      var boxes, red, blue 
 
-      for(var i=0; i<5; ++i) {
-        algorithm.run(convertedBoxes)
+      if(bipartite) {
+        red = generateBoxes(distribution[0])
+        blue = generateBoxes(distribution[1])
+      } else {
+        boxes = generateBoxes(distribution)
       }
 
-      var tStart = Date.now()
-      var counter = 0
-      for(var i=0; i<numIters; ++i) {
-        counter += algorithm.run(convertedBoxes)
+      console.log('case:', i, ' - ', distribution)
+      algorithms.forEach(function(alg) {
+        console.log('testing', alg)
+
+        if(bipartite) {
+          var algorithm = bipartiteAlgs[alg]
+          var convertedRed = algorithm.prepare(red)
+          var convertedBlue = algorithm.prepare(blue)
+          for(var k=0; k<5; ++k) {
+            algorithm.run(convertedRed, convertedBlue)
+          }
+          var tStart = Date.now()
+          var counter = 0
+          for(var k=0; k<numIters; ++k) {
+            counter += algorithm.run(convertedRed, convertedBlue)
+          }
+          var tEnd = Date.now()
+        } else {
+          var algorithm = completeAlgs[alg]
+          var convertedBoxes = algorithm.prepare(boxes)
+          for(var k=0; k<5; ++k) {
+            algorithm.run(convertedBoxes)
+          }
+          var tStart = Date.now()
+          var counter = 0
+          for(var k=0; k<numIters; ++k) {
+            counter += algorithm.run(convertedBoxes)
+          }
+          var tEnd = Date.now()
+        }
+
+        result.data[alg].push((tEnd - tStart) / numIters)
+
+        console.log('num interactions=', counter, 'tAvg=', (tEnd-tStart)/numIters + 'ms')
+      })
+    }
+
+    return result
+  }
+
+  if(!sweepParam || sweepParam.length === 0) {
+    //Bar chart
+    sweepCases = [1]
+    sweepParams = []
+    sweepRanges = []
+    var result = parameterSweep()
+    return {
+      name: desc.name,
+      type: 'barchart',
+      plot: desc.plot,
+      data: result.data
+    }
+  } else if(sweepParam.length === 1) {
+    //Series
+    var result = parameterSweep()
+    return {
+      name:   desc.name,
+      type:   'series',
+      plot:   desc.plot,
+      xaxisTitle:  result.names.join(', '),
+      xaxis: result.axis.map(function(data) {
+        return data[0]
+      }),
+      data: result.data
+    }
+  } else {
+    //Surface plot
+    var result = {
+      name: desc.name,
+      type: surface,
+      plot: desc.plot,
+      yaxisTitle: sweepParam[1].map(function(name) {
+        if(name in prettyNames) {
+          return prettyNames[name]
+        }
+        return name
+      }),
+      yaxis: [],
+      data: {}
+    }
+    for(var i=0; i<algorithms.length; ++i) {
+      data[algorithms[i]] = []
+    }
+
+    for(var i=0; i<sweepCases[1]; ++i) {
+      var xparameter = []
+      for(var j=0; j<sweepParam[1].length; ++j) {
+        var p = sweepParam[j].split('.')
+        var x = distribution
+        while(p.length > 1) {
+          x = x[p.shift()]
+        }
+        var v = sweepValues[1][j]
+        var vv = v[0] + (v[1] - v[0]) / sweepCases * i
+        x[p[0]] = vv
+        yparameter.push(vv)
       }
-      var tEnd = Date.now()
+      result.yaxis.push(xparameter[0])
 
-      result.data[alg].push((tEnd - tStart) / numIters)
+      var sweep = parameterSweep()
+      result.xaxisTitle = sweep.names.join(', ')
+      result.xaxis = sweep.axis
+      for(var j=0; j<algorithms.length; ++j) {
+        result.data[algorithms[j]].push(sweep.data[algorithms[j]])
+      }
+    }
 
-      console.log('num interactions=', counter, 'tAvg=', (tEnd-tStart)/numIters + 'ms')
-    })
-  })
-
-  return result
+    return result
+  }
 }

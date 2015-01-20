@@ -13,12 +13,30 @@ var PLOTLY_CONFIG = require('./plotly.json')
 var plotly = require('plotly')(PLOTLY_CONFIG.username, PLOTLY_CONFIG.key)
 
 function plotBenchmark(result) {
-
   if(typeof document !== 'undefined') {
     console.log(result)
     return
   }
 
+  switch(result.type) {
+    case 'barchart':
+      plotBarChart(result)
+    break
+
+    case 'series':
+      plotSeries(result)
+    break
+
+    case 'surface':
+      plotSurface(result)
+    break
+  }
+}
+
+function plotBarChart(result) {
+}
+
+function plotSeries(result) {
   var series = Object.keys(result.data)
   var traces = series.map(function(name) {
     return {
@@ -28,21 +46,22 @@ function plotBenchmark(result) {
       name: name
     }
   })
-
-  var layout = {
-    title: result.name,
-    showlegend: true,
-    yaxis: {
-      title: "Average time (ms)"
-    },
-    xaxis: {
-      title: "Number of boxes"
-    }
-  }
-
   var options = {
     filename: result.name,
-    fileopt: "overwrite"
+    fileopt: "overwrite",
+    layout: {
+      title: result.name,
+      showlegend: true,
+      autosize: true,
+      yaxis: {
+        title: "Average time (ms)",
+        autorange: true
+      },
+      xaxis: {
+        title: result.xaxisTitle,
+        autorange: true
+      }
+    }
   }
 
   plotly.plot(traces, options, function(err, msg) {
@@ -53,4 +72,7 @@ function plotBenchmark(result) {
       console.log(result.name+':', msg.url)
     }
   })
+}
+
+function plotSurface(result) {
 }

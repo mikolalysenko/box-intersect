@@ -3,10 +3,8 @@ var runBench = require('./bench')
 var makePlot = require('./plot')
 
 var cases = [
-  require('./cases/uniform2d-small.json')
-  //require('./cases/boxbench.json')
-  //require('./cases/length-vs-bounds.json')
-  //require('./cases/grid2d.json')
+  //require('./cases/uniform2d-small-complete.json')
+  require('./cases/uniform2d-small-bipartite.json')
 ]
 
 if(process.argv[2]) {
