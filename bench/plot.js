@@ -17,16 +17,13 @@ function plotBenchmark(result) {
     console.log(result)
     return
   }
-
   switch(result.type) {
     case 'barchart':
       plotBarChart(result)
     break
-
     case 'series':
       plotSeries(result)
     break
-
     case 'surface':
       plotSurface(result)
     break
@@ -34,6 +31,36 @@ function plotBenchmark(result) {
 }
 
 function plotBarChart(result) {
+  var series = Object.keys(result.data)
+  var data = [ {
+    x: [],
+    y: [],
+    type: 'bar'
+  }]
+  series.forEach(function(name) {
+    data[0].x.push(name)
+    data[0].y.push(result.data[name][0])
+  })
+  var options = {
+    filename: result.name,
+    fileopt: 'overwrite',
+    layout: {
+      title: result.name,
+      autosize: true,
+      yaxis: {
+        title: "Average time (ms)",
+        autorange: true
+      }
+    }
+  }
+  plotly.plot(data, options, function(err, msg) {
+    if(err) {
+      console.error(err)
+      console.log("data:", JSON.stringify(result))
+    } else {
+      console.log(result.name + ':', msg.url)
+    }
+  })
 }
 
 function plotSeries(result) {
@@ -63,11 +90,10 @@ function plotSeries(result) {
       }
     }
   }
-
   plotly.plot(traces, options, function(err, msg) {
     if(err) {
       console.error("error!", err)
-      console.log("data:", result)
+      console.log("data:", JSON.stringify(result))
     } else {
       console.log(result.name+':', msg.url)
     }
@@ -75,4 +101,40 @@ function plotSeries(result) {
 }
 
 function plotSurface(result) {
+  var series = Object.keys(result.data)
+  var traces = series.map(function(name) {
+    return {
+      name: name,
+      x: result.xaxis,
+      y: result.yaxis,
+      z: result.data[name],
+      type: 'surface'
+    }
+  })
+  var options = {
+    filename: result.name,
+    fileopt: "overwrite",
+    layout: {
+      title: result.name,
+      scene: {
+        xaxis: {
+          title: result.xaxisTitle
+        },
+        yaxis: {
+          title: result.yaxisTitle
+        },
+        zaxis: {
+          title: "Average time (ms)"
+        }
+      }
+    }
+  }
+  plotly.plot(traces, options, function(err, msg) {
+    if(err) {
+      console.error(err)
+      console.log('data:', JSON.stringify(result))
+    } else {
+      console.log(result.name + ': ', msg.url)
+    }
+  })
 }

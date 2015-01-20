@@ -88,7 +88,7 @@ function runBenchmark(desc) {
           x = x[p.shift()]
         }
         var v = sweepValues[0][j]
-        var vv = v[0] + (v[1] - v[0]) / sweepCases * i
+        var vv = v[0] + (v[1] - v[0]) / sweepCases[0] * i
         x[p[0]] = vv
         xparameter.push(vv)
       }
@@ -146,8 +146,8 @@ function runBenchmark(desc) {
   if(!sweepParam || sweepParam.length === 0) {
     //Bar chart
     sweepCases = [1]
-    sweepParams = []
-    sweepRanges = []
+    sweepParam = [[]]
+    sweepValues = [[]]
     var result = parameterSweep()
     return {
       name: desc.name,
@@ -172,7 +172,7 @@ function runBenchmark(desc) {
     //Surface plot
     var result = {
       name: desc.name,
-      type: surface,
+      type: 'surface',
       plot: desc.plot,
       yaxisTitle: sweepParam[1].map(function(name) {
         if(name in prettyNames) {
@@ -184,32 +184,33 @@ function runBenchmark(desc) {
       data: {}
     }
     for(var i=0; i<algorithms.length; ++i) {
-      data[algorithms[i]] = []
+      result.data[algorithms[i]] = []
     }
 
-    for(var i=0; i<sweepCases[1]; ++i) {
-      var xparameter = []
+    for(var i=0; i<=sweepCases[1]; ++i) {
+      var yparameter = []
       for(var j=0; j<sweepParam[1].length; ++j) {
-        var p = sweepParam[j].split('.')
+        var p = sweepParam[1][j].split('.')
         var x = distribution
         while(p.length > 1) {
           x = x[p.shift()]
         }
         var v = sweepValues[1][j]
-        var vv = v[0] + (v[1] - v[0]) / sweepCases * i
+        var vv = v[0] + (v[1] - v[0]) / sweepCases[1] * i
         x[p[0]] = vv
         yparameter.push(vv)
       }
-      result.yaxis.push(xparameter[0])
+      result.yaxis.push(yparameter[0])
 
       var sweep = parameterSweep()
       result.xaxisTitle = sweep.names.join(', ')
-      result.xaxis = sweep.axis
+      result.xaxis = sweep.axis.map(function(x) {
+        return x[0]
+      })
       for(var j=0; j<algorithms.length; ++j) {
         result.data[algorithms[j]].push(sweep.data[algorithms[j]])
       }
     }
-
     return result
   }
 }
