@@ -1,23 +1,25 @@
-**WORK IN PROGRESS**
-
 box-intersect
 =============
-This modules finds all intersection in a set of n boxes in d-dimensions, or between a pair of sets with n and m boxes respectively.  The time taken is O((n+m) log^d(n+m)) and the algorithm uses a temporary scratch memory of size O(n+m).  This memory is pooled so that after the first execution no additional memory is allocated.
-
-The algorithm in this package is based on the one described in the following paper:
-
-* [A. Zomorodian, H. Edelsbrunner. (2000) "Software for fast box intersections" In proceedings of SoCG](http://pub.ist.ac.at/~edels/Papers/2002-J-01-FastBoxIntersection.pdf)
-
-A detailed experimental analysis of the performance of this module can be found in the `bench/README.md` file within this repository:
-
-* [Benchmark and performance comparisons](https://github.com/mikolalysenko/box-intersect/blob/master/bench/README.md#benchmark-overview)
-
-Some possible applications of this library include:
+This modules finds all intersection in a set of n boxes in d-dimensions, or between a pair of sets with n and m boxes respectively.  The time taken is O((n+m) log^d(n+m)) and the algorithm uses a temporary scratch memory of size O(n+m).  This memory is pooled so that after the first execution no additional memory is allocated.  Some possible applications of this library include:
 
 * Collision detection
 * Polygon clipping
 * Batched box stabbing queries
 * Mesh boolean operations (CSG)
+
+The algorithm in this package is based on the one described in the following paper:
+
+* [A. Zomorodian, H. Edelsbrunner. (2000) "Software for fast box intersections" In proceedings of SoCG](http://pub.ist.ac.at/~edels/Papers/2002-J-01-FastBoxIntersection.pdf)
+
+A detailed experimental analysis of the performance of this module as well as comparisons with other libraries for box intersection can be found in the following repository: 
+
+* [box-intersect-benchmark](https://github.com/mikolalysenko/box-intersect-benchmark)
+
+For more information on this problem, please see the following series of blog posts:
+
+* [Collision detection (part 1)](http://0fps.net/2015/01/07/collision-detection-part-1/)
+* [Collision detection (part 2)](http://0fps.net/2015/01/18/collision-detection-part-2/)
+* Collision detection (part 3)  **NOT YET PUBLISHED**
 
 # Example
 
@@ -109,7 +111,7 @@ Using [npm](https://www.npmjs.org/), just run the following command:
 npm install box-intersect
 ```
 
-This module works in any reasonable CommonJS environment (includes browsersify, iojs and node.js).
+This module works in any reasonable CommonJS environment, such as browsersify, iojs or node.js.
 
 # API
 
@@ -121,7 +123,7 @@ var boxIntersect = require('box-intersect')
 
 Finds all pairs intersections in a set of boxes.  There are two basic modes of operation for this function:
 
-* `full` which detects all pairs of intersections within a single set of boxes
+* `complete` which detects all pairs of intersections within a single set of boxes
 * `bipartite` which detects pairs of intersections between two different sets of boxes
 
 The parameters to the function are as follows:
