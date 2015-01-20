@@ -7,9 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js",
-    "irhydra": "browserify bench/run.js | indexhtmlify > bench/irhydra.html && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --no-sandbox --js-flags=\"--trace-hydrogen --trace-phase=Z --trace-deopt --code-comments --hydrogen-track-positions --redirect-code-traces\" bench/irhydra.html",
-    "perf": "browserify bench/run.js | indexhtmlify > bench/irhydra.html && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --no-sandbox --js-flags=\"--trace-opt --trace-inline --trace-deopt --code-comments --trap-on-deopt\" bench/irhydra.html"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
