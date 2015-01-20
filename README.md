@@ -59,7 +59,7 @@ console.log('early out result:', result)
 #### Output
 
 ```
-overlaps: [ [ 0, 1 ], [ 0, 2 ], [ 1, 2 ] ]
+overlap: [ [ 0, 1 ], [ 0, 2 ], [ 1, 2 ] ]
 overlap: [ 1, 1, 2, 2 ] [ 0, -1, 3, 2 ]
 overlap: [ 1, 1, 2, 2 ] [ 2, 1, 4, 5 ]
 early out result: 2
