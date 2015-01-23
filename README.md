@@ -19,7 +19,7 @@ For more information on this problem, please see the following series of blog po
 
 * [Collision detection (part 1)](http://0fps.net/2015/01/07/collision-detection-part-1/)
 * [Collision detection (part 2)](http://0fps.net/2015/01/18/collision-detection-part-2/)
-* Collision detection (part 3)  **NOT YET PUBLISHED**
+* [Collision detection (part 3)](http://0fps.net/2015/01/23/collision-detection-part-3-benchmarks/)
 
 # Example
 
