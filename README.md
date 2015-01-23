@@ -13,7 +13,7 @@ The algorithm in this package is based on the one described in the following pap
 
 A detailed experimental analysis of the performance of this module as well as comparisons with other libraries for box intersection can be found in the following repository: 
 
-* [box-intersect-benchmark](https://github.com/mikolalysenko/box-intersect-benchmark)
+* [The Great JavaScript Box Intersection Benchmark](https://github.com/mikolalysenko/box-intersect-benchmark)
 
 For more information on this problem, please see the following series of blog posts:
 
