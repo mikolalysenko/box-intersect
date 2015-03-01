@@ -99,26 +99,36 @@ function boxIntersect(red, blue, visit, full) {
   return retval
 }
 
+
+var RESULT
+
+function appendItem(i,j) {
+  RESULT.push([i,j])
+}
+
+function intersectFullArray(x) {
+  RESULT = []
+  boxIntersect(x, x, appendItem, true)
+  return RESULT
+}
+
+function intersectBipartiteArray(x, y) {
+  RESULT = []
+  boxIntersect(x, y, appendItem, false)
+  return RESULT
+}
+
 //User-friendly wrapper, handle full input and no-visitor cases
 function boxIntersectWrapper(arg0, arg1, arg2) {
   var result
   switch(arguments.length) {
     case 1:
-      result = []
-      boxIntersect(arg0, arg0, function(i,j) {
-        result.push([i, j])
-      }, true)
-      return result
+      return intersectFullArray(arg0)
     case 2:
       if(typeof arg1 === 'function') {
-        var visit = arg1
-        return boxIntersect(arg0, arg0, visit, true)
+        return boxIntersect(arg0, arg0, arg1, true)
       } else {
-        result = []
-        boxIntersect(arg0, arg1, function(i,j) {
-          result.push([i, j])
-        }, false)
-        return result
+        return intersectBipartiteArray(arg0, arg1)
       }
     case 3:
       return boxIntersect(arg0, arg1, arg2, false)
