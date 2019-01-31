@@ -1,6 +1,6 @@
 {
   "name": "box-intersect",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Any dimensional box intersection",
   "main": "index.js",
   "directories": {
