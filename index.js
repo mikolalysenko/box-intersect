@@ -60,7 +60,7 @@ function boxIntersect(red, blue, visit, full) {
       //Special case: 1d complete
       sweep.init(n)
       retval = sweep.sweepComplete(
-        d, visit, 
+        d, visit,
         0, n, redList, redIds,
         0, n, redList, redIds)
     } else {
@@ -76,7 +76,7 @@ function boxIntersect(red, blue, visit, full) {
         if(d === 1) {
           //Special case: 1d bipartite
           retval = sweep.sweepBipartite(
-            d, visit, 
+            d, visit,
             0, n, redList,  redIds,
             0, m, blueList, blueIds)
         } else {
@@ -120,7 +120,6 @@ function intersectBipartiteArray(x, y) {
 
 //User-friendly wrapper, handle full input and no-visitor cases
 function boxIntersectWrapper(arg0, arg1, arg2) {
-  var result
   switch(arguments.length) {
     case 1:
       return intersectFullArray(arg0)
