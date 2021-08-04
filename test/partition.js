@@ -40,9 +40,9 @@ tape('partitionBoxes', function(t) {
       var boxFlat = genBoxes.flatten(boxes)
       var boxIds = iota(n)
 
-      var mid = partition(d, axis, start, end, 
-        guard(boxFlat, 2*d*start, 2*d*end), 
-        guard(boxIds, start, end), 
+      var mid = partition(d, axis, start, end,
+        guard(boxFlat, 2*d*start, 2*d*end),
+        guard(boxIds, start, end),
         pred, a, b)
       t.ok(start <= mid && mid <= end, 'mid (' + mid + ') in range ' + start + '-' + end)
       for(var i=0; i<start; ++i) {
@@ -79,9 +79,9 @@ tape('partitionBoxes', function(t) {
     for(var i=0; i<4; ++i) {
       var boxes = genBoxes.random(32, d)
       var istart = Math.random()
-      
+
       verifyPartition(d, boxes, 0, 32, intervalContainsPoint, Math.random(), Math.random())
-      
+
       verifyPartition(d, boxes, 1, 2, intervalStartLessThan, 0.5, 0.5)
       verifyPartition(d, boxes, 0, 32, intervalContainsInterval, istart, istart+Math.random())
       verifyPartition(d, boxes, 0, 32, intervalContainsPoint, Math.random(), Math.random())
