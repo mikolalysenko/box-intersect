@@ -50,12 +50,12 @@ tape('bruteForcePartial', function(t) {
       }
 
       bruteForcePartial(d, axis, visit, flip,
-        redStart, 
-        redEnd, 
-        guard(red, 2*d*redStart, 2*d*redEnd), 
+        redStart,
+        redEnd,
+        guard(red, 2*d*redStart, 2*d*redEnd),
         guard(redIds, redStart, redEnd),
-        blueStart, 
-        blueEnd, 
+        blueStart,
+        blueEnd,
         guard(blue, 2*d*blueStart, 2*d*blueEnd),
         guard(blueIds, blueStart, blueEnd))
 
@@ -121,6 +121,6 @@ tape('bruteForcePartial', function(t) {
   verify(2, 0, false, genBoxes.degenerate(2), genBoxes.degenerate(2))
 
   //TODO: test early out
-  
+
   t.end()
 })

@@ -1,12 +1,21 @@
 {
   "name": "box-intersect",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Any dimensional box intersection",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "test_bipartite": "tape test/bipartite.js",
+    "test_brute": "tape test/brute.js",
+    "test_full": "tape test/full.js",
+    "test_intersect-iter": "tape test/intersect-iter.js",
+    "test_median": "tape test/median.js",
+    "test_partition": "tape test/partition.js",
+    "test_scan": "tape test/scan.js",
+    "test_sweep-bipartite": "tape test/sweep-bipartite.js",
+    "test_sweep-complete": "tape test/sweep-complete.js",
     "test": "tape test/*.js"
   },
   "repository": {

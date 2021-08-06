@@ -12,6 +12,7 @@ logs
 results
 
 npm-debug.log
+package-lock.json
 node_modules/*
 *.DS_Store
 *.asm

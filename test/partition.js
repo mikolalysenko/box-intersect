@@ -9,12 +9,16 @@ var genPartition = require('../lib/partition')
 // Type signature:
 //
 // function partitionBoxes(
-//  d, axis, 
-//  start, end, boxes, id, 
+//  d, axis,
+//  start, end, boxes, id,
 //  pred, a, b)
 //
 
-var partition = genPartition('pred(lo,hi,a0,a1)', ['pred', 'a0', 'a1'])
+var partition_eq = genPartition('lo===p0')
+var partition_lt = genPartition('lo<p0')
+var partition_le = genPartition('lo<=p0')
+var partition_in = genPartition('lo<=p0&&p0<=hi')
+var partition
 
 function intervalContainsInterval(a0, a1, lo, hi) {
   return a0 <= lo && hi <= a1
@@ -40,10 +44,11 @@ tape('partitionBoxes', function(t) {
       var boxFlat = genBoxes.flatten(boxes)
       var boxIds = iota(n)
 
-      var mid = partition(d, axis, start, end, 
-        guard(boxFlat, 2*d*start, 2*d*end), 
-        guard(boxIds, start, end), 
+      var mid = partition(d, axis, start, end,
+        guard(boxFlat, 2*d*start, 2*d*end),
+        guard(boxIds, start, end),
         pred, a, b)
+
       t.ok(start <= mid && mid <= end, 'mid (' + mid + ') in range ' + start + '-' + end)
       for(var i=0; i<start; ++i) {
         t.equals(boxIds[i], i, '< start ok')
@@ -61,10 +66,6 @@ tape('partitionBoxes', function(t) {
         var idx = boxIds[i]
         t.ok(pred(boxes[idx][axis], boxes[idx][axis+d], a, b), 'pred true < mid')
       }
-      for(var i=mid; i<end; ++i) {
-        var idx = boxIds[i]
-        t.ok(!pred(boxes[idx][axis], boxes[idx][axis+d], a, b), 'pred false >= mid')
-      }
 
       boxIds.sort(function(a, b) { return a-b })
 
@@ -73,20 +74,33 @@ tape('partitionBoxes', function(t) {
   }
 
   var dboxes = genBoxes.degenerate(2)
+  partition = partition_lt
   verifyPartition(2, dboxes, 0, dboxes.length, intervalStartLessThan, 0.1)
 
   for(var d=2; d<=4; ++d) {
     for(var i=0; i<4; ++i) {
       var boxes = genBoxes.random(32, d)
       var istart = Math.random()
-      
+
+      partition = partition_in
       verifyPartition(d, boxes, 0, 32, intervalContainsPoint, Math.random(), Math.random())
-      
+
+      partition = partition_lt
       verifyPartition(d, boxes, 1, 2, intervalStartLessThan, 0.5, 0.5)
+
+      partition = partition_eq
       verifyPartition(d, boxes, 0, 32, intervalContainsInterval, istart, istart+Math.random())
+
+      partition = partition_in
       verifyPartition(d, boxes, 0, 32, intervalContainsPoint, Math.random(), Math.random())
+
+      partition = partition_lt
       verifyPartition(d, boxes, 10, 30, intervalStartLessThan, Math.random(), Math.random())
+
+      partition = partition_le
       verifyPartition(d, boxes, 30, 32, intervalEndGreaterThanEqual, Math.random(), Math.random())
+
+      partition = partition_lt
       verifyPartition(d, boxes, 10, 20, intervalStartLessThan, Infinity)
       verifyPartition(d, boxes, 10, 20, intervalStartLessThan, -Infinity)
     }
