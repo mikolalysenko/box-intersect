@@ -33,7 +33,7 @@
     "dup": "^1.0.0",
     "guarded-array": "^1.0.0",
     "iota-array": "^1.0.0",
-    "tape": "^3.4.0",
+    "tape": "^5.9.0",
     "uniq": "^1.0.1"
   },
   "dependencies": {
